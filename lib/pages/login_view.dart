@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:piladea_web/Controller/perfil_crud.dart';
+import 'package:piladea_web/Pages/home_page.dart';
 
 class LoginView extends StatelessWidget {
   static String id = 'login_view';
