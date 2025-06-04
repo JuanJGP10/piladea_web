@@ -4,6 +4,7 @@ import 'package:piladea_web/Controller/perfil_crud.dart';
 import 'package:piladea_web/Pages/home_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:piladea_web/Pages/singup.dart';
 
 class LoginView extends StatefulWidget {
   static String id = 'login_view';
@@ -203,13 +204,31 @@ class _LoginViewState extends State<LoginView> {
               },
             ),
             const SizedBox(height: 50),
-            const Text(
-              '¿No eres miembro? ',
-              style: TextStyle(color: Colors.white, fontSize: 17.0),
-            ),
-            const Text(
-              'Registrate ahora',
-              style: TextStyle(color: Colors.purpleAccent, fontSize: 17.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  '¿No eres miembro? ',
+                  style: TextStyle(
+                      color:Colors.white,
+                      fontSize: 17.0
+                  ),
+                ),
+                GestureDetector(
+                  onTap: (){
+                    Navigator.pushNamed(context, 'signup_view');
+                  },
+                  child: const Text(
+                    'Registrate ahora',
+                    style: TextStyle(
+                      color:Colors.purpleAccent,
+                      fontSize: 17.0,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

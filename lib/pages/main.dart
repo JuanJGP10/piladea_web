@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piladea_web/Pages/login_view.dart';
+import 'package:piladea_web/Pages/singup.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       initialRoute: LoginView.id,
-      routes: {LoginView.id: (context) => LoginView()},
+      routes: {LoginView.id: (context) => LoginView(),SignupView.id: (context)=> SignupView(),},
       //routes: customRoutes,
       //home: const MyHomePage(title: 'Inicio de Sesión'),
     );
