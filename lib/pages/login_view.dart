@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:piladea_web/Controller/perfil_crud.dart';
 import 'package:piladea_web/Pages/home_page.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginView extends StatelessWidget {
   static String id = 'login_view';
@@ -136,6 +138,35 @@ class LoginView extends StatelessWidget {
               style: TextStyle(color: Colors.white, fontSize: 15.0),
             ),
             SizedBox(height: 30),
+            IconButton(
+              icon: Icon(
+                  FontAwesomeIcons.google,size: 50,color:Colors.white),
+              onPressed: ()async{
+                final url=Uri.parse('https://mail.google.com/');
+                if(await canLaunchUrl(url)){
+                  await launchUrl(url,mode:LaunchMode.externalApplication);
+                }else{
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('No se pudo abrir Gmail.')),
+                  );
+                }
+              },
+            ),
+            SizedBox(height: 50),
+            const Text(
+              '¿No eres miembro? ',
+              style: TextStyle(
+                  color:Colors.white,
+                  fontSize: 17.0
+              ),
+            ),
+            const Text(
+              'Registrate ahora',
+              style: TextStyle(
+                color:Colors.purpleAccent,
+                fontSize: 17.0,
+              ),
+            ),
 
             //logo de google
           ],
