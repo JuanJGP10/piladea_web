@@ -60,14 +60,18 @@ class _LoginViewState extends State<LoginView> {
               child: Text(message, style: const TextStyle(fontSize: 15)),
             ),
             IconButton(
-              icon: const Icon(Icons.close, size: 20, color: Colors.white),
+              icon: const Icon(
+                Icons.close,
+                size: 20,
+                color: Colors.purpleAccent,
+              ),
               onPressed: () {
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
               },
             ),
           ],
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.black87,
       ),
     );
   }
@@ -209,19 +213,16 @@ class _LoginViewState extends State<LoginView> {
               children: [
                 const Text(
                   '¿No eres miembro? ',
-                  style: TextStyle(
-                      color:Colors.white,
-                      fontSize: 17.0
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 17.0),
                 ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.pushNamed(context, 'signup_view');
                   },
                   child: const Text(
                     'Registrate ahora',
                     style: TextStyle(
-                      color:Colors.purpleAccent,
+                      color: Colors.purpleAccent,
                       fontSize: 17.0,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,

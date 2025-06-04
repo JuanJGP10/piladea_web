@@ -1,0 +1,14 @@
+{
+    "flutter": {
+        "platforms": {
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "piladea-c5329",
+                    "configurations": {
+                        "web": "1:588085411322:web:a2ca912ad65b8ebc34f843"
+                    }
+                }
+            }
+        }
+    }
+}
