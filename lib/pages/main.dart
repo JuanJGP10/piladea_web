@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:piladea_web/Pages/login_view.dart';
 import 'package:piladea_web/Pages/singup.dart';
 import 'package:piladea_web/firebase_options.dart';
-import 'package:piladea_web/Pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

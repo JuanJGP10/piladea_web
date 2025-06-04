@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:piladea_web/Authentication/structures/controllers/auth_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:piladea_web/Pages/home_page.dart';
 
 class SignupView extends StatefulWidget {
   static String id = 'signup_view';
@@ -19,7 +20,6 @@ class _RegisterPageState extends State<SignupView> {
   String? selectedOption;
   DateTime? selectedDate;
 
-  // Lista para el ComboBox
   final List<String> opciones = ['Masculino', 'Femenino', 'Otro', 'No binario'];
 
   Future<void> _selectDate(BuildContext context) async {
@@ -29,10 +29,11 @@ class _RegisterPageState extends State<SignupView> {
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
       });
+    }
   }
 
   void register() async {
@@ -41,17 +42,29 @@ class _RegisterPageState extends State<SignupView> {
         emailController.text,
         passwordController.text,
       );
+
       if (passwordController.text.length > 6) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Usuario registrado exitosamente')),
+          const SnackBar(
+            content: Text('Usuario registrado exitosamente'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+
+        await Future.delayed(const Duration(seconds: 2));
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('La contarseña no es válida (>6 caracteres)')),
+          const SnackBar(
+            content: Text('La contraseña no es válida (>6 caracteres)'),
+            duration: Duration(seconds: 3),
+          ),
         );
       }
     } on FirebaseException catch (e) {
-      // Manejo específico para Firebase
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Firebase Error: ${e.message}')));
@@ -64,102 +77,152 @@ class _RegisterPageState extends State<SignupView> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Crear usuario'),
-        titleTextStyle: TextStyle(color: Colors.purple, fontSize: 30),
-        centerTitle: true,
-        backgroundColor: Colors.black12,
-      ),
-
       backgroundColor: Colors.black87,
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          //mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: nameController,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: 'Nombre',
-                labelStyle: TextStyle(color: Colors.white),
-              ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: size.width * 0.1,
+              vertical: size.height * 0.03,
             ),
-            TextField(
-              controller: lastNameController,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: 'Apellido',
-                labelStyle: TextStyle(color: Colors.white),
-              ),
-            ),
-            TextField(
-              controller: emailController,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: 'Email',
-                labelStyle: TextStyle(color: Colors.white),
-              ),
-            ),
-            TextField(
-              controller: passwordController,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: 'Contraseña',
-                labelStyle: TextStyle(color: Colors.white),
-              ),
-              obscureText: true,
-            ),
-            // ComboBox
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: 'Genero',
-                filled: true,
-                fillColor: Colors.black12,
-              ),
-              value: selectedOption,
-              dropdownColor: Colors.black87,
-              items: opciones
-                  .map(
-                    (op) => DropdownMenuItem(
-                      value: op,
-
-                      child: Text(op, style: TextStyle(color: Colors.white)),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedOption = value;
-                });
-              },
-            ),
-
-            // Date Picker
-            SizedBox(height: 16),
-            InkWell(
-              onTap: () => _selectDate(context),
-              child: InputDecorator(
-                decoration: InputDecoration(
-                  labelText: 'Fecha de Nacimiento',
-                  border: OutlineInputBorder(),
-                ),
-                child: Text(
-                  selectedDate == null
-                      ? 'Seleccionar fecha'
-                      : '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}',
+            child: Column(
+              children: [
+                const SizedBox(height: 80),
+                const Text(
+                  'Crear usuario',
                   style: TextStyle(
-                    color: selectedDate == null
-                        ? Colors.grey[600]
-                        : Colors.black87,
+                    color: Colors.purpleAccent,
+                    fontSize: 50.0,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    shadows: [
+                      Shadow(
+                        blurRadius: 15.0,
+                        color: Colors.purpleAccent,
+                        offset: Offset(0, 0),
+                      ),
+                    ],
                   ),
                 ),
-              ),
+                const SizedBox(height: 40),
+                _buildStyledTextField(nameController, 'Nombre'),
+                const SizedBox(height: 15),
+                _buildStyledTextField(lastNameController, 'Apellido'),
+                const SizedBox(height: 15),
+                _buildStyledTextField(emailController, 'Email'),
+                const SizedBox(height: 15),
+                _buildStyledTextField(
+                  passwordController,
+                  'Contraseña',
+                  obscure: true,
+                ),
+                const SizedBox(height: 15),
+                _buildDropdownField(),
+                const SizedBox(height: 15),
+                _buildDateField(),
+                const SizedBox(height: 35),
+                ElevatedButton(
+                  onPressed: register,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.purple,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                      vertical: 15,
+                    ),
+                  ),
+                  child: const Text(
+                    'Registrarse',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: 35),
-            ElevatedButton(onPressed: register, child: Text('Registrarse')),
-          ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStyledTextField(
+    TextEditingController controller,
+    String label, {
+    bool obscure = false,
+  }) {
+    return SizedBox(
+      height: 60,
+      width: 600,
+      child: TextField(
+        controller: controller,
+        obscureText: obscure,
+        style: const TextStyle(color: Colors.white, fontSize: 20.0),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: const TextStyle(
+            color: Colors.white,
+            fontSize: 18.0,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropdownField() {
+    return SizedBox(
+      height: 60,
+      width: 600,
+      child: DropdownButtonFormField<String>(
+        decoration: const InputDecoration(
+          labelText: 'Género',
+          labelStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 18.0,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        dropdownColor: Colors.black87,
+        value: selectedOption,
+        items: opciones.map((op) {
+          return DropdownMenuItem(
+            value: op,
+            child: Text(op, style: const TextStyle(color: Colors.white)),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() => selectedOption = value);
+        },
+      ),
+    );
+  }
+
+  Widget _buildDateField() {
+    return SizedBox(
+      height: 60,
+      width: 600,
+      child: InkWell(
+        onTap: () => _selectDate(context),
+        child: InputDecorator(
+          decoration: const InputDecoration(
+            labelText: 'Fecha de Nacimiento',
+            labelStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 18.0,
+              fontWeight: FontWeight.w700,
+            ),
+            border: OutlineInputBorder(),
+          ),
+          child: Text(
+            selectedDate == null
+                ? 'Seleccionar fecha'
+                : '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}',
+            style: TextStyle(
+              color: selectedDate == null ? Colors.grey[600] : Colors.white,
+              fontSize: 16,
+            ),
+          ),
         ),
       ),
     );

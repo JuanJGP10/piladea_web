@@ -94,12 +94,7 @@ class _LoginViewState extends State<LoginView> {
                 fontStyle: FontStyle.italic,
                 shadows: [
                   Shadow(
-                    blurRadius: 30.0,
-                    color: Colors.purpleAccent,
-                    offset: Offset(0, 0),
-                  ),
-                  Shadow(
-                    blurRadius: 60.0,
+                    blurRadius: 15.0,
                     color: Colors.purpleAccent,
                     offset: Offset(0, 0),
                   ),
