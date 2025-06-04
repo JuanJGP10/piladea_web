@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:C/'
+import 'package:piladea_web/Authentication/structures/controllers/auth_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 class SignupView extends StatefulWidget {
-  static String id= 'signup_view';
+  static String id = 'signup_view';
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
@@ -15,7 +14,7 @@ class _RegisterPageState extends State<SignupView> {
   final lastNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final authService = AuthService();
+  final authService = AuthController();
 
   String? selectedOption;
   DateTime? selectedDate;
@@ -38,22 +37,24 @@ class _RegisterPageState extends State<SignupView> {
 
   void register() async {
     try {
-      await authService.registerWithEmailPassword(
-        name: nameController.text.trim(),
-        apellido: lastNameController.text.trim(),
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-        Gender: selectedOption.toString().trim(),
-        fechaNacimiento:  selectedDate.toString().trim(),
+      await authService.registerwithEmailAndPassword(
+        emailController.text,
+        passwordController.text,
       );
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Usuario registrado exitosamente')),
-      );
+      if (passwordController.text.length > 6) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Usuario registrado exitosamente')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('La contarseña no es válida (>6 caracteres)')),
+        );
+      }
     } on FirebaseException catch (e) {
       // Manejo específico para Firebase
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Firebase Error: ${e.message}')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Firebase Error: ${e.message}')));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error inesperado: ${e.toString()}')),
@@ -64,7 +65,12 @@ class _RegisterPageState extends State<SignupView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Crear usuario'), titleTextStyle: TextStyle(color: Colors.purple,fontSize: 30,),centerTitle: true, backgroundColor: Colors.black12,),
+      appBar: AppBar(
+        title: Text('Crear usuario'),
+        titleTextStyle: TextStyle(color: Colors.purple, fontSize: 30),
+        centerTitle: true,
+        backgroundColor: Colors.black12,
+      ),
 
       backgroundColor: Colors.black87,
       body: Padding(
@@ -72,22 +78,56 @@ class _RegisterPageState extends State<SignupView> {
         child: Column(
           //mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(controller: nameController,style: TextStyle(color: Colors.white), decoration: InputDecoration(labelText: 'Nombre',labelStyle: TextStyle(color: Colors.white)),),
-            TextField(controller: lastNameController,style: TextStyle(color: Colors.white), decoration: InputDecoration(labelText: 'Apellido',labelStyle: TextStyle(color: Colors.white))),
-            TextField(controller: emailController,style: TextStyle(color: Colors.white), decoration: InputDecoration(labelText: 'Email',labelStyle: TextStyle(color: Colors.white))),
-            TextField(controller: passwordController,style: TextStyle(color: Colors.white), decoration: InputDecoration(labelText: 'Contraseña',labelStyle: TextStyle(color: Colors.white)), obscureText: true),
+            TextField(
+              controller: nameController,
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: 'Nombre',
+                labelStyle: TextStyle(color: Colors.white),
+              ),
+            ),
+            TextField(
+              controller: lastNameController,
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: 'Apellido',
+                labelStyle: TextStyle(color: Colors.white),
+              ),
+            ),
+            TextField(
+              controller: emailController,
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: 'Email',
+                labelStyle: TextStyle(color: Colors.white),
+              ),
+            ),
+            TextField(
+              controller: passwordController,
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: 'Contraseña',
+                labelStyle: TextStyle(color: Colors.white),
+              ),
+              obscureText: true,
+            ),
             // ComboBox
             DropdownButtonFormField<String>(
-              decoration: InputDecoration(labelText: 'Genero', filled: true, fillColor: Colors.black12),
+              decoration: InputDecoration(
+                labelText: 'Genero',
+                filled: true,
+                fillColor: Colors.black12,
+              ),
               value: selectedOption,
               dropdownColor: Colors.black87,
               items: opciones
-                  .map((op) => DropdownMenuItem(
+                  .map(
+                    (op) => DropdownMenuItem(
+                      value: op,
 
-                value: op,
-
-                child: Text(op,style: TextStyle(color: Colors.white)),
-              ))
+                      child: Text(op, style: TextStyle(color: Colors.white)),
+                    ),
+                  )
                   .toList(),
               onChanged: (value) {
                 setState(() {
@@ -110,9 +150,10 @@ class _RegisterPageState extends State<SignupView> {
                       ? 'Seleccionar fecha'
                       : '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}',
                   style: TextStyle(
-                      color: selectedDate == null
-                          ? Colors.grey[600]
-                          : Colors.black87),
+                    color: selectedDate == null
+                        ? Colors.grey[600]
+                        : Colors.black87,
+                  ),
                 ),
               ),
             ),
