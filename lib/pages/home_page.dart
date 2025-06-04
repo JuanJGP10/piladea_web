@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // import 'package:piladea_web/Authentication/services/auth_firebase_repository.dart';
 
 class HomePage extends StatefulWidget {
+  static String id='/home';
   const HomePage({super.key});
 
   @override
