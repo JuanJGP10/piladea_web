@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 adasdasdasd
+=======
+hnola
+>>>>>>> 0d97d22febd45dbdaadc0544ea0f5571ac791b52
