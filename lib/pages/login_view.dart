@@ -3,8 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:piladea_web/Controller/perfil_crud.dart';
 import 'package:piladea_web/Pages/home_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:piladea_web/Pages/singup.dart';
 import 'package:piladea_web/pages/auth_controller.dart';
 
 class LoginView extends StatefulWidget {
@@ -204,7 +202,9 @@ class _LoginViewState extends State<LoginView> {
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Error al iniciar sesión con Google')),
+                    SnackBar(
+                      content: Text('Error al iniciar sesión con Google'),
+                    ),
                   );
                 }
               },

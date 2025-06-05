@@ -7,7 +7,6 @@ import 'package:piladea_web/Controller/perfil_crud.dart';
 import 'package:piladea_web/Model/perfil.dart';
 import 'package:piladea_web/Pages/home_page.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'calendario_widget.dart';
 
 class SignupView extends StatefulWidget {
   static String id = 'signup_view';
@@ -152,7 +151,10 @@ class _RegisterPageState extends State<SignupView> {
                         Navigator.of(context).pop();
                       }
                     },
-                    child: const Text('Seleccionar Fecha',style: TextStyle(color: Colors.white),),
+                    child: const Text(
+                      'Seleccionar Fecha',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ],
               ),

@@ -59,10 +59,10 @@ class AuthFirebaseRepository {
       print(
         "#######################33${await PerfilCRUD.instance.buscarSiExistePerfil(user!.uid)}",
       );
-      if (await PerfilCRUD.instance.buscarSiExistePerfil(user!.uid)) {
-        await PerfilCRUD.instance.findPerfil(user!.uid);
+      if (await PerfilCRUD.instance.buscarSiExistePerfil(user.uid)) {
+        await PerfilCRUD.instance.findPerfil(user.uid);
       } else {
-        PerfilCRUD.instance.recibirUID(user!.uid);
+        PerfilCRUD.instance.recibirUID(user.uid);
         List<String> nombre = user.displayName!.split(" ");
         DateTime t = DateTime.now();
         Perfil? p = PerfilCRUD.instance.crearPerfilGoogle(

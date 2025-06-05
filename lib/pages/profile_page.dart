@@ -111,7 +111,7 @@ class _ProfilePage extends State<ProfilePage> {
               style: TextStyle(fontSize: 14, color: Colors.grey),
             ),
             subtitle: Text(
-              '${p.fechaNacimiento!.day}/${p.fechaNacimiento!.month}/${p.fechaNacimiento!.year}',
+              '${p.fechaNacimiento.day}/${p.fechaNacimiento.month}/${p.fechaNacimiento.year}',
               style: const TextStyle(fontSize: 16),
             ),
           ),
