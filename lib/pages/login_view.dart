@@ -5,6 +5,7 @@ import 'package:piladea_web/Pages/home_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:piladea_web/Pages/singup.dart';
+import 'package:piladea_web/pages/auth_controller.dart';
 
 class LoginView extends StatefulWidget {
   static String id = 'login_view';
@@ -188,17 +189,23 @@ class _LoginViewState extends State<LoginView> {
             ),
             const SizedBox(height: 30),
             IconButton(
-              icon: const Icon(
+              icon: Icon(
                 FontAwesomeIcons.google,
                 size: 50,
                 color: Colors.white,
               ),
               onPressed: () async {
-                final url = Uri.parse('https://mail.google.com/');
-                if (await canLaunchUrl(url)) {
-                  await launchUrl(url, mode: LaunchMode.externalApplication);
+                final user = await authController.loginWithGoogle();
+
+                if (user != null) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                  );
                 } else {
-                  _showSnackBar('No se pudo abrir Gmail.');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error al iniciar sesión con Google')),
+                  );
                 }
               },
             ),

@@ -4,7 +4,7 @@ import 'package:piladea_web/Pages/login_view.dart';
 import 'package:piladea_web/Pages/singup.dart';
 import 'package:piladea_web/firebase_options.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
         LoginView.id: (context) => LoginView(),
         SignupView.id: (context) => SignupView(),
         //HomePage.id: (context) => const HomePage(),
+
       },
       //routes: customRoutes,
       //home: const MyHomePage(title: 'Inicio de Sesión'),
