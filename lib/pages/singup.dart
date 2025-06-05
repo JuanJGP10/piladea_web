@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:piladea_web/Authentication/structures/controllers/auth_controller.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:piladea_web/Controller/imagen_aleatoria.dart';
 import 'package:piladea_web/Controller/perfil_crud.dart';
