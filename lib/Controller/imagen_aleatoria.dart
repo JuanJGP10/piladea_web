@@ -7,8 +7,6 @@ class ImagenesAleatorias {
     'assets/images/ciclista_azul.png',
   ];
 
-  static final int _siguienteNumero = 0;
-
   var rng = Random();
 
   String obtenerRutaImagenAleatoria() {
