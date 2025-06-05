@@ -85,7 +85,7 @@ class _LoginViewState extends State<LoginView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'Login',
+              'Log in',
               style: TextStyle(
                 color: Colors.purpleAccent,
                 fontSize: 60.0,
@@ -176,7 +176,7 @@ class _LoginViewState extends State<LoginView> {
               child: _isLoading
                   ? const CircularProgressIndicator(color: Colors.white)
                   : const Text(
-                      'Iniciar Sesión',
+                      'Log in',
                       style: TextStyle(color: Colors.white),
                     ),
             ),

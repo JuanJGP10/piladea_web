@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:piladea_web/pages//login_view.dart';
+import 'package:piladea_web/pages/inicio.dart';
 
 class SplashPage extends StatefulWidget {
   static const String id = 'splash_view';
@@ -20,14 +21,14 @@ class _SplashPageState extends State<SplashPage> {
   Future<void> _navigateToNextPage() async {
     await Future.delayed(const Duration(seconds: 2));
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const LoginView()),
+      MaterialPageRoute(builder: (context) => const Inicio()),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // Color de fondo
+      backgroundColor: Colors.black87, // Color de fondo
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
