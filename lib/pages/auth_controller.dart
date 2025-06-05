@@ -14,12 +14,10 @@ class AuthController {
         return userCredential.user;
       } else {
         // Para mobile: forzamos que olvide la cuenta anterior
-        final googleSignIn = GoogleSignIn(
-          scopes: ['email'],
-        );
+        final googleSignIn = GoogleSignIn(scopes: ['email']);
 
         await googleSignIn.disconnect(); // Muy importante
-        await googleSignIn.signOut();    // Limpia aún más por si acaso
+        await googleSignIn.signOut(); // Limpia aún más por si acaso
 
         // Esto mostrará el selector de cuentas de Google
         final googleUser = await googleSignIn.signIn();
