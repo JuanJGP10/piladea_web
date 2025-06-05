@@ -18,7 +18,7 @@ class AuthController {
           scopes: ['email'],
         );
 
-        await googleSignIn.disconnect(); // ⚠️ Muy importante
+        await googleSignIn.disconnect(); // Muy importante
         await googleSignIn.signOut();    // Limpia aún más por si acaso
 
         // Esto mostrará el selector de cuentas de Google
