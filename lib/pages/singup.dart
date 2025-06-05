@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:piladea_web/Authentication/structures/controllers/auth_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:piladea_web/Controller/imagen_aleatoria.dart';
+import 'package:piladea_web/Model/perfil.dart';
 import 'package:piladea_web/Pages/home_page.dart';
+import 'package:piladea_web/Controller/perfil_crud.dart';
 
 class SignupView extends StatefulWidget {
   static String id = 'signup_view';
@@ -42,6 +45,20 @@ class _RegisterPageState extends State<SignupView> {
         emailController.text,
         passwordController.text,
       );
+
+      PerfilCRUD p = PerfilCRUD();
+
+      Perfil? p1 = p.crearPerfil(
+        ImagenesAleatorias().obtenerRutaImagenAleatoria(),
+        nameController.text,
+        lastNameController.text,
+        emailController.text,
+        selectedOption,
+        selectedDate!,
+      );
+
+      await p.addPerfil(p1);
+      await PerfilCRUD.instance.findPerfil(p1!.uID!);
 
       if (passwordController.text.length > 6) {
         ScaffoldMessenger.of(context).showSnackBar(

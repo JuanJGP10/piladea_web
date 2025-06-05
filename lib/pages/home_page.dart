@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:piladea_web/Authentication/Services/auth_firebase_repository.dart';
+import 'package:piladea_web/Controller/perfil_crud.dart';
+import 'package:piladea_web/Pages/catalogo_premios.dart';
+import 'package:piladea_web/Pages/cupones_page.dart';
+import 'package:piladea_web/Pages/login_view.dart';
+import 'package:piladea_web/Pages/mis_destinos_page.dart';
+import 'package:piladea_web/Pages/profile_page.dart';
 // import 'package:piladea_web/Controller/perfil_CRUD.dart';
 // import 'package:piladea_web/Pages/login_view.dart';
 // import 'package:piladea_web/Authentication/services/auth_firebase_repository.dart';
@@ -12,48 +19,207 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool _liked = false;
-  Icon _corazon = const Icon(Icons.favorite, color: Colors.white);
-
-  void likedCambioEstado() {
-    setState(() {
-      _liked = !_liked;
-      _corazon = Icon(
-        Icons.favorite,
-        color: _liked ? Colors.purpleAccent : Colors.white,
-      );
-    });
-  }
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      backgroundColor: Colors.black87,
       appBar: AppBar(
-        title: const Text('Mapa', style: TextStyle(color: Colors.purpleAccent)),
-        backgroundColor: Colors.black87,
-        actions: [IconButton(icon: _corazon, onPressed: likedCambioEstado)],
-        iconTheme: const IconThemeData(color: Colors.purpleAccent),
+        backgroundColor: Colors.purpleAccent,
+        title: const Text(
+          'Piladea',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.menu, color: Colors.white),
+          onPressed: () {
+            _scaffoldKey.currentState?.openDrawer();
+          },
+        ),
       ),
-      body: Column(), // Aquí puedes agregar el contenido real del cuerpo
-      backgroundColor: Colors.white24,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.black87,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: Colors.purpleAccent),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.query_stats, color: Colors.purpleAccent),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person, color: Colors.purpleAccent),
-            label: '',
-          ),
-        ],
+      drawer: Drawer(
+        backgroundColor: Colors.black54,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Colors.purpleAccent),
+              child: Text(
+                'Menú',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+            ListTile(
+              title: const Text(
+                'Mis Destinos',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                // Acción para la opción 1
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const MisDestinosPage()),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text(
+                'Catálogo de premios',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => CatalogoPremiosPage()),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text(
+                'Mis cupones',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (_) => const CuponesPage()));
+              },
+            ),
+            ListTile(
+              title: const Text(
+                'Perfil',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                // Navegar a la página de perfil
+                Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (_) => const ProfilePage()));
+              },
+            ),
+            // if (PerfilCRUD.currentProfile!.admin)
+            //   ListTile(
+            //     title: const Text('Estadísticas'),
+            //     onTap: () {
+            //       Navigator.of(context).push(
+            //         MaterialPageRoute(builder: (_) => const EstadisticasPage()),
+            //       );
+            //     },
+            //   ),
+            ListTile(
+              title: const Text(
+                'Cerrar sesión',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text('Cerrar sesión'),
+                      content: const Text(
+                        '¿Estás seguro de que deseas cerrar sesión?',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            // Acción para el botón "Sí"
+                            Navigator.of(context).pop(
+                              true,
+                            ); // Cierra el AlertDialog y devuelve true
+                          },
+                          child: const Text('Sí'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            // Acción para el botón "No"
+                            Navigator.of(context).pop(
+                              false,
+                            ); // Cierra el AlertDialog y devuelve false
+                          },
+                          child: const Text('No'),
+                        ),
+                      ],
+                    );
+                  },
+                ).then((value) {
+                  // value es el valor devuelto por Navigator.pop en los botones Sí o No
+                  if (value != null && value) {
+                    AuthFirebaseRepository authFirebaseRepository =
+                        AuthFirebaseRepository();
+                    authFirebaseRepository.logOut();
+                    PerfilCRUD.currentProfile = null;
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (_) => LoginView()),
+                    );
+                  } else {
+                    // Acción para el botón "No"
+                  }
+                });
+              },
+            ),
+          ],
+        ),
       ),
+      // body: Stack(
+      //   children: [
+      //     if (!_showSecondMap) // Mostrar MapScreen primero
+      //       MapPage(
+      //         circleLayer: CircleLayer(
+      //           circles: [
+      //             CircleMarker(
+      //               point: LatLng(37.87604842629718, -0.8064902376526171),
+      //               color: Colors.blue.withOpacity(0.1),
+      //               borderStrokeWidth: 3.0,
+      //               borderColor: Colors.blue,
+      //               radius: 5800, // radio en metros
+      //               useRadiusInMeter: true,
+      //             ),
+      //           ],
+      //         ),
+      //         onStartRoute: _onStartRoute,
+      //         selectedLocation: widget.ubicacion != null
+      //             ? LatLng(
+      //                 double.parse(
+      //                   widget.ubicacion!.split(',')[0].trim(),
+      //                 ), // Latitud
+      //                 double.parse(
+      //                   widget.ubicacion!.split(',')[1].trim(),
+      //                 ), // Longitud
+      //               )
+      //             : _selectedLocation,
+      //       )
+      //     else
+      //       OpenStreetMapSearchAndPick(
+      //         onPicked: (pickedData) {
+      //           _selectedLocation = LatLng(
+      //             pickedData.latLong.latitude,
+      //             pickedData.latLong.longitude,
+      //           );
+      //           print(pickedData.address);
+      //         },
+      //         onStartRoute: () {
+      //           widget.ubicacion = null;
+      //           _previousMap = OpenStreetMapSearchAndPick(
+      //             onPicked: (pickedData) {
+      //               _selectedLocation = LatLng(
+      //                 pickedData.latLong.latitude,
+      //                 pickedData.latLong.longitude,
+      //               );
+      //               print(pickedData.address);
+      //             },
+      //             onStartRoute: _toggleMap,
+      //           );
+      //           _toggleMap();
+      //         },
+      //       ),
+      //   ],
+      // ),
+      /*labelStyle: TextStyle(fontSize: 18.0),
+            onTap: () {
+              setState(() {
+                _showSecondMap = true; // Mostrar OpenStreetMapSearchAndPick
+              });*/
     );
   }
 }
