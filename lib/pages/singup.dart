@@ -46,32 +46,33 @@ class _RegisterPageState extends State<SignupView> {
         passwordController.text,
       );
 
-      PerfilCRUD p = PerfilCRUD();
-
-      Perfil? p1 = p.crearPerfil(
-        ImagenesAleatorias().obtenerRutaImagenAleatoria(),
-        nameController.text,
-        lastNameController.text,
-        emailController.text,
-        selectedOption,
-        selectedDate!,
-      );
-
-      await p.addPerfil(p1);
-      await PerfilCRUD.instance.findPerfil(p1!.uID!);
-
       if (passwordController.text.length > 6) {
+        PerfilCRUD p = PerfilCRUD();
+
+        Perfil? p1 = p.crearPerfil(
+          ImagenesAleatorias().obtenerRutaImagenAleatoria(),
+          nameController.text,
+          lastNameController.text,
+          emailController.text,
+          selectedOption,
+          selectedDate!,
+        );
+
+        await p.addPerfil(p1);
+        await PerfilCRUD.instance.findPerfil(p1!.uID!);
+
+        await Future.delayed(const Duration(seconds: 2));
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Usuario registrado exitosamente'),
             duration: Duration(seconds: 2),
           ),
-        );
-
-        await Future.delayed(const Duration(seconds: 2));
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
