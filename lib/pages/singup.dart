@@ -152,7 +152,7 @@ class _RegisterPageState extends State<SignupView> {
                         Navigator.of(context).pop();
                       }
                     },
-                    child: const Text('Seleccionar Fecha'),
+                    child: const Text('Seleccionar Fecha',style: TextStyle(color: Colors.white),),
                   ),
                 ],
               ),
