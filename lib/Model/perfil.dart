@@ -5,46 +5,37 @@ import 'package:piladea_web/Controller/fechaActual.dart';
 
 class Perfil {
   //Atributos
-
+  bool admin;
+  String? nombre;
+  String? apellidos;
+  String? correo;
+  String? sexo;
+  DateTime fechaNacimiento;
+  DateTime fechaCreacion;
   String? uID;
-
+  String? rutaImagen;
+  int bicicoins;
+  List<String> cupones;
+  List<String> trayectos;
+  List<String> destinos;
   String? docID;
 
-  String? nombre;
-
-  String? apellidos;
-
-  DateTime? fechaNacimiento;
-
-  String? correo;
-
-  String? sexo;
-
-  String? rutaImagen;
-
-  List<dynamic> cupones = [];
-
-  List<dynamic> destinos = [];
-
-  List<dynamic> trayectos = [];
-
-  bool admin = false;
-
-  int? bicicoins = 0;
-
-  final DateTime fechaCreacion;
-
-  //Constructores
   Perfil({
+    required this.admin,
     this.nombre,
     this.apellidos,
-    this.fechaNacimiento,
-    this.sexo,
     this.correo,
+    this.sexo,
+    required this.fechaNacimiento,
+    required this.fechaCreacion, // <-- asegúrate de incluirlo
     this.uID,
     this.rutaImagen,
-    required this.admin,
-  }) : fechaCreacion = fechaActual().obtenerFechaActual();
+    this.bicicoins = 0,
+    this.cupones = const [],
+    this.trayectos = const [],
+    this.destinos = const [],
+    this.docID,
+  });
 
   Perfil.fromJson(Map<String, dynamic> json)
     : nombre = json['nombre'],

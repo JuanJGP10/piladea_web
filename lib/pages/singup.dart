@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:piladea_web/Authentication/structures/controllers/auth_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:piladea_web/Controller/imagen_aleatoria.dart';
+import 'package:piladea_web/Controller/perfil_crud.dart';
+import 'package:piladea_web/Model/perfil.dart';
 import 'package:piladea_web/Pages/home_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'calendario_widget.dart';
@@ -35,8 +38,8 @@ class _RegisterPageState extends State<SignupView> {
       builder: (context) {
         DateTime _focusedDay = selectedDate ?? DateTime.now();
         DateTime? _tempSelectedDay = selectedDate;
-        final TextEditingController _manualDateController =
-        TextEditingController(
+        final TextEditingController
+        _manualDateController = TextEditingController(
           text: selectedDate != null
               ? '${selectedDate!.day.toString().padLeft(2, '0')}/${selectedDate!.month.toString().padLeft(2, '0')}/${selectedDate!.year}'
               : '',
@@ -103,7 +106,7 @@ class _RegisterPageState extends State<SignupView> {
                         _tempSelectedDay = selected;
                         _focusedDay = focused;
                         _manualDateController.text =
-                        '${selected.day.toString().padLeft(2, '0')}/${selected.month.toString().padLeft(2, '0')}/${selected.year}';
+                            '${selected.day.toString().padLeft(2, '0')}/${selected.month.toString().padLeft(2, '0')}/${selected.year}';
                       });
                     },
                     calendarStyle: const CalendarStyle(
@@ -122,10 +125,14 @@ class _RegisterPageState extends State<SignupView> {
                       titleCentered: true,
                       formatButtonVisible: false,
                       titleTextStyle: TextStyle(color: Colors.white),
-                      leftChevronIcon:
-                      Icon(Icons.chevron_left, color: Colors.white),
-                      rightChevronIcon:
-                      Icon(Icons.chevron_right, color: Colors.white),
+                      leftChevronIcon: Icon(
+                        Icons.chevron_left,
+                        color: Colors.white,
+                      ),
+                      rightChevronIcon: Icon(
+                        Icons.chevron_right,
+                        color: Colors.white,
+                      ),
                     ),
                     daysOfWeekStyle: const DaysOfWeekStyle(
                       weekendStyle: TextStyle(color: Colors.white),
@@ -155,8 +162,6 @@ class _RegisterPageState extends State<SignupView> {
       },
     );
   }
-
-
 
   /*Future<void> _selectDate(BuildContext context) async {
   final DateTime? picked = await showDatePicker(
@@ -206,6 +211,29 @@ class _RegisterPageState extends State<SignupView> {
             duration: Duration(seconds: 2),
           ),
         );
+
+        PerfilCRUD p = PerfilCRUD();
+        //ImagenesAleatorias i = ImagenesAleatorias();
+        final String? userUid = FirebaseAuth.instance.currentUser?.uid;
+
+        Perfil? p1 = Perfil(
+          admin: false,
+          nombre: nameController.text,
+          apellidos: lastNameController.text,
+          correo: emailController.text,
+          sexo: selectedOption,
+          fechaNacimiento: selectedDate!,
+          fechaCreacion:
+              DateTime.now(), // Marca temporal al momento de creación
+          uID: userUid,
+          rutaImagen: ImagenesAleatorias().obtenerRutaImagenAleatoria(),
+          bicicoins: 0,
+          cupones: [],
+          trayectos: [],
+          destinos: [],
+        );
+        await p.addPerfil(p1);
+        await PerfilCRUD.instance.findPerfil(p1.uID!);
 
         await Future.delayed(const Duration(seconds: 2));
         Navigator.pushReplacement(
@@ -303,10 +331,10 @@ class _RegisterPageState extends State<SignupView> {
   }
 
   Widget _buildStyledTextField(
-      TextEditingController controller,
-      String label, {
-        bool obscure = false,
-      }) {
+    TextEditingController controller,
+    String label, {
+    bool obscure = false,
+  }) {
     return SizedBox(
       height: 60,
       width: 600,

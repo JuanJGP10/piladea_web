@@ -4,20 +4,28 @@ import 'package:get/get.dart';
 
 class PerfilCRUD {
   static PerfilCRUD get instance => Get.put(PerfilCRUD());
-  //obtener la colección de perfiles
+
   final CollectionReference perfiles = FirebaseFirestore.instance.collection(
     'Perfiles',
   );
 
-  //CREATE: añadir nuevos perfiles
   static String? uid;
   static Perfil? currentProfile;
-  Future<void> addPerfil(Perfil? perfil) {
-    return perfiles.add(perfil?.toJSON());
+
+  /// CREATE
+  Future<void> addPerfil(Perfil? perfil) async {
+    if (perfil == null || perfil.uID == null) {
+      print('❌ Perfil o UID es null. No se puede guardar.');
+      return;
+    }
+
+    perfil.fechaCreacion = DateTime.now(); // Asegura que este campo exista
+    print('✅ Guardando perfil: ${perfil.toJSON()}');
+
+    await perfiles.add(perfil.toJSON());
   }
 
-  //READ: obtener los perfiles de la base de datos
-
+  /// READ
   Future<Perfil?> findPerfil(String uID) async {
     try {
       var querySnapshot = await perfiles.where("uID", isEqualTo: uID).get();
@@ -36,21 +44,40 @@ class PerfilCRUD {
           fechaNacimiento,
           fechaCreacion,
         );
-        print("··································${perfil}");
         perfil.docID = querySnapshot.docs[0].id;
         currentProfile = perfil;
-
+        print('✅ Perfil encontrado: ${perfil.nombre}');
         return perfil;
       } else {
-        print("No profile found for uID: $uID");
+        print("⚠️ No se encontró perfil con uID: $uID");
         return null;
       }
     } catch (e) {
-      print("Error completing: $e");
+      print("❌ Error al buscar perfil: $e");
       return null;
     }
   }
 
+  /// UPDATE
+  Future<void> updatePerfil(String? docID, Perfil? nuevoPerfil) {
+    if (docID == null || nuevoPerfil == null) return Future.value();
+    currentProfile = nuevoPerfil;
+    currentProfile?.docID = docID;
+    return perfiles.doc(docID).update(nuevoPerfil.toJSON());
+  }
+
+  void updateBicicoins(int? bicicoins) {
+    final result = (currentProfile?.bicicoins ?? 0) - bicicoins!;
+    currentProfile?.bicicoins = result;
+    updatePerfil(currentProfile?.docID, currentProfile);
+  }
+
+  /// DELETE
+  Future<void> deletePerfil(String docID) {
+    return perfiles.doc(docID).delete();
+  }
+
+  /// AGREGAR DATOS RELACIONADOS
   void anyadirCupon(String id) {
     currentProfile?.cupones.add('/Cupones/$id');
     updatePerfil(currentProfile?.docID, currentProfile);
@@ -66,20 +93,13 @@ class PerfilCRUD {
     updatePerfil(currentProfile?.docID, currentProfile);
   }
 
+  /// STREAMING Y CONSULTAS
   Query<Object?> findPerfilCorreo(String correo) {
-    CollectionReference usuario = FirebaseFirestore.instance.collection(
-      'Perfiles',
-    );
     return perfiles.where("correo", isEqualTo: correo);
   }
 
-  //READ-ALL: obtener los perfiles de la base de datos
-
   Stream<QuerySnapshot> getPerfilesStream() {
-    final perfilesStream = perfiles
-        .orderBy('fechaNacimiento', descending: true)
-        .snapshots();
-    return perfilesStream;
+    return perfiles.orderBy('fechaNacimiento', descending: true).snapshots();
   }
 
   Future<List<Perfil>> getAllPerfiles() async {
@@ -87,37 +107,19 @@ class PerfilCRUD {
 
     QuerySnapshot querySnapshotCupon = await perfiles.get();
 
-    querySnapshotCupon.docs.forEach((document) {
+    for (var document in querySnapshotCupon.docs) {
       var data = Map<String, dynamic>.from(document.data() as Map);
       Timestamp timestamp = data['fechaCreacion'];
       DateTime fechaCreacion = timestamp.toDate();
       Timestamp timestamp2 = data['fechaNacimiento'];
       DateTime fechaNacimiento = timestamp2.toDate();
       list.add(Perfil.fromJsonWithDate(data, fechaNacimiento, fechaCreacion));
-    });
+    }
 
     return list;
   }
 
-  //UPDATE: actualizar perfiles por doc ID
-
-  Future<void> updatePerfil(String? docID, Perfil? nuevoPerfil) {
-    currentProfile = nuevoPerfil;
-    currentProfile?.docID = docID;
-    return perfiles.doc(docID).update(nuevoPerfil!.toJSON());
-  }
-
-  void updateBicicoins(int? bicicoins) {
-    final result = (currentProfile?.bicicoins ?? 0) - bicicoins!;
-    currentProfile?.bicicoins = result;
-    PerfilCRUD.instance.updatePerfil(currentProfile?.docID, currentProfile);
-  }
-  //DELETE: eliminar perfil de la base de datos por doc ID
-
-  Future<void> deletePerfil(String docID) {
-    return perfiles.doc(docID).delete();
-  }
-
+  /// CREAR PERFILES
   Perfil? crearPerfil(
     String image,
     String nombre,
@@ -126,7 +128,12 @@ class PerfilCRUD {
     String? sexo,
     DateTime fecha,
   ) {
-    Perfil p = Perfil(
+    if (uid == null) {
+      print('❌ UID no recibido antes de crear perfil');
+      return null;
+    }
+
+    return Perfil(
       admin: false,
       nombre: nombre,
       apellidos: apellido,
@@ -135,13 +142,8 @@ class PerfilCRUD {
       fechaNacimiento: fecha,
       uID: uid,
       rutaImagen: image,
+      fechaCreacion: DateTime.now(),
     );
-
-    return p;
-  }
-
-  void recibirUID(String? uids) {
-    uid = uids;
   }
 
   Perfil? crearPerfilGoogle(
@@ -151,7 +153,12 @@ class PerfilCRUD {
     String? correo,
     DateTime fechanacimiento,
   ) {
-    Perfil p = Perfil(
+    if (uid == null) {
+      print('❌ UID no recibido antes de crear perfil Google');
+      return null;
+    }
+
+    return Perfil(
       admin: false,
       nombre: nombre,
       apellidos: apellido,
@@ -159,24 +166,21 @@ class PerfilCRUD {
       uID: uid,
       rutaImagen: image,
       fechaNacimiento: fechanacimiento,
+      fechaCreacion: DateTime.now(),
     );
-    return p;
   }
 
-  //FUNCIONES
+  /// UID SETTER
+  void recibirUID(String? uids) {
+    uid = uids;
+    print('✅ UID recibido: $uid');
+  }
 
+  /// UTILIDADES
   Future<bool> buscarSiExistePerfil(String uD) async {
     List<Perfil> perfiles = await getAllPerfiles();
-    bool encontrado = false;
-    perfiles.forEach((perfil) {
-      if (perfil.uID == uD) {
-        encontrado = true;
-      }
-    });
-    return encontrado;
+    return perfiles.any((perfil) => perfil.uID == uD);
   }
-
-  //FUNCIONES PARA ESTADISTICAS
 
   Future<List<Perfil>> obtenerPerfilesPorFecha(
     DateTime fechaInicio,
@@ -188,16 +192,16 @@ class PerfilCRUD {
         .where('fechaCreacion', isGreaterThanOrEqualTo: fechaInicio)
         .get();
 
-    querySnapshotCupon.docs.forEach((document) {
+    for (var document in querySnapshotCupon.docs) {
       var data = Map<String, dynamic>.from(document.data() as Map);
-      Timestamp timestamp = data['fechaCreacion'];
-      DateTime fechaCreacion = timestamp.toDate();
-      if (fechaCreacion.compareTo(fechaFin) <= 0) {
-        Timestamp timestamp2 = data['fechaNacimiento'];
-        DateTime fechaNacimiento = timestamp2.toDate();
+      DateTime fechaCreacion = (data['fechaCreacion'] as Timestamp).toDate();
+      if (fechaCreacion.isBefore(fechaFin) ||
+          fechaCreacion.isAtSameMomentAs(fechaFin)) {
+        DateTime fechaNacimiento = (data['fechaNacimiento'] as Timestamp)
+            .toDate();
         list.add(Perfil.fromJsonWithDate(data, fechaNacimiento, fechaCreacion));
       }
-    });
+    }
 
     return list;
   }
