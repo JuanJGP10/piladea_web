@@ -28,6 +28,7 @@ class _ProfilePage extends State<ProfilePage> {
       backgroundColor: Colors.black87,
       appBar: AppBar(
         backgroundColor: Colors.purpleAccent,
+        iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           'Perfil',
           textAlign: TextAlign.center,

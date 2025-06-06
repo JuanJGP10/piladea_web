@@ -17,7 +17,8 @@ class _MisDestinosPageState extends State<CuponesPage> {
     return Scaffold(
       backgroundColor: Colors.black87,
       appBar: AppBar(
-        title: Text('Mis Destinos'),
+        title: Text('Cupones', style: TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.purpleAccent,
       ),
       body: Center(
