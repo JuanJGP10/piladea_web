@@ -8,17 +8,13 @@ class CatalogoPremiosPage extends StatefulWidget {
   const CatalogoPremiosPage({Key? key}) : super(key: key);
 
   @override
-  State<CatalogoPremiosPage> createState() => _MisDestinosPageState();
+  State<CatalogoPremiosPage> createState() => _CatalogoPremiosPageState();
 }
 
-class _MisDestinosPageState extends State<CatalogoPremiosPage> {
+class _CatalogoPremiosPageState extends State<CatalogoPremiosPage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Catálogo de premios',
-      home: HomePage(),
-      debugShowCheckedModeBanner: false,
-    );
+    return HomePage();
   }
 }
 
@@ -49,6 +45,12 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Catálogo de premios'),
         backgroundColor: Colors.purpleAccent,
+        leading: Navigator.of(context).canPop()
+            ? IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        )
+            : null,
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
@@ -62,10 +64,9 @@ class HomePage extends StatelessWidget {
               color: const Color.fromARGB(255, 179, 188, 196),
               borderRadius: BorderRadius.circular(12),
             ),
-            width: 200, // ancho fijo para alinearlo a la izquierda
             child: Row(
               children: [
-                Image.network(item['image']!, width: 60, height: 60),
+                Image.asset(item['image']!, width: 60, height: 60),
                 SizedBox(width: 12),
                 Expanded(
                   child: Text(
