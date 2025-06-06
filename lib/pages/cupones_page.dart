@@ -15,14 +15,14 @@ class _MisDestinosPageState extends State<CuponesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: Color.fromARGB(255, 242, 251, 255),
       appBar: AppBar(
-        title: Text('Cupones', style: TextStyle(color: Colors.white)),
-        iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: Colors.purpleAccent,
+        title: Text('Cupones', style: TextStyle(color: Colors.black)),
+        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: Color(0xFF74d4ff),
       ),
       body: Center(
-        child: Text('Contenido aquí', style: TextStyle(color: Colors.white)),
+        child: Text('Contenido aquí', style: TextStyle(color: Colors.black)),
       ),
     );
   }

@@ -28,7 +28,7 @@ class _RegisterPageState extends State<SignupView> {
   void _showCalendarPicker(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.black,
+      backgroundColor: Color.fromARGB(255, 223, 246, 255),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -76,18 +76,18 @@ class _RegisterPageState extends State<SignupView> {
                 children: [
                   TextField(
                     controller: _manualDateController,
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.black),
                     keyboardType: TextInputType.datetime,
                     decoration: const InputDecoration(
                       hintText: 'dd/mm/yyyy',
-                      hintStyle: TextStyle(color: Colors.white),
+                      hintStyle: TextStyle(color: Colors.black),
                       labelText: 'Ingresar fecha manualmente',
-                      labelStyle: TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: Colors.black),
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: BorderSide(color: Colors.black),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: BorderSide(color: Colors.black),
                       ),
                     ),
                   ),
@@ -110,37 +110,37 @@ class _RegisterPageState extends State<SignupView> {
                     calendarStyle: const CalendarStyle(
                       outsideDaysVisible: false,
                       selectedDecoration: BoxDecoration(
-                        color: Colors.deepPurpleAccent,
+                        color: Color(0xFF74d4ff),
                         shape: BoxShape.circle,
                       ),
                       todayDecoration: BoxDecoration(
-                        color: Colors.deepPurple,
+                        color: Color(0xFF74d4ff),
                         shape: BoxShape.circle,
                       ),
-                      defaultTextStyle: TextStyle(color: Colors.white),
+                      defaultTextStyle: TextStyle(color: Colors.black),
                     ),
                     headerStyle: const HeaderStyle(
                       titleCentered: true,
                       formatButtonVisible: false,
-                      titleTextStyle: TextStyle(color: Colors.white),
+                      titleTextStyle: TextStyle(color: Colors.black),
                       leftChevronIcon: Icon(
                         Icons.chevron_left,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                       rightChevronIcon: Icon(
                         Icons.chevron_right,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                     daysOfWeekStyle: const DaysOfWeekStyle(
-                      weekendStyle: TextStyle(color: Colors.white),
-                      weekdayStyle: TextStyle(color: Colors.white),
+                      weekendStyle: TextStyle(color: Colors.black),
+                      weekdayStyle: TextStyle(color: Colors.black),
                     ),
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
+                      backgroundColor: Color(0xFF74d4ff),
                     ),
                     onPressed: () {
                       if (_tempSelectedDay != null) {
@@ -152,7 +152,7 @@ class _RegisterPageState extends State<SignupView> {
                     },
                     child: const Text(
                       'Seleccionar Fecha',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                 ],
@@ -174,10 +174,10 @@ class _RegisterPageState extends State<SignupView> {
       return Theme(
         data: Theme.of(context).copyWith(
           colorScheme: ColorScheme.dark(
-            primary: Colors.deepPurple, // Color de encabezado y botón OK
-            onPrimary: Colors.white, // Color del texto en encabezado
+            primary: Colors.Color(0xFF2b7fff), // Color de encabezado y botón OK
+            onPrimary: Colors.black, // Color del texto en encabezado
             surface: Colors.grey[800]!, // Fondo del calendario
-            onSurface: Colors.white, // Color de texto
+            onSurface: Colors.black, // Color de texto
           ),
           dialogBackgroundColor: Colors.black87,
           textButtonTheme: TextButtonThemeData(
@@ -265,7 +265,7 @@ class _RegisterPageState extends State<SignupView> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: Color.fromARGB(255, 242, 251, 255),
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
@@ -279,17 +279,10 @@ class _RegisterPageState extends State<SignupView> {
                 const Text(
                   'Crear usuario',
                   style: TextStyle(
-                    color: Colors.purpleAccent,
+                    color: Colors.black,
                     fontSize: 50.0,
                     fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                    shadows: [
-                      Shadow(
-                        blurRadius: 15.0,
-                        color: Colors.purpleAccent,
-                        offset: Offset(0, 0),
-                      ),
-                    ],
+                    fontStyle: FontStyle.normal,
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -312,7 +305,7 @@ class _RegisterPageState extends State<SignupView> {
                 ElevatedButton(
                   onPressed: register,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purple,
+                    backgroundColor: Color(0xFF74d4ff),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 30,
                       vertical: 15,
@@ -320,7 +313,7 @@ class _RegisterPageState extends State<SignupView> {
                   ),
                   child: const Text(
                     'Registrarse',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                    style: TextStyle(color: Colors.black, fontSize: 18),
                   ),
                 ),
               ],
@@ -342,11 +335,11 @@ class _RegisterPageState extends State<SignupView> {
       child: TextField(
         controller: controller,
         obscureText: obscure,
-        style: const TextStyle(color: Colors.white, fontSize: 20.0),
+        style: const TextStyle(color: Colors.black, fontSize: 20.0),
         decoration: InputDecoration(
           labelText: label,
           labelStyle: const TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontSize: 18.0,
             fontWeight: FontWeight.w700,
           ),
@@ -363,7 +356,7 @@ class _RegisterPageState extends State<SignupView> {
         decoration: const InputDecoration(
           labelText: 'Género',
           labelStyle: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontSize: 18.0,
             fontWeight: FontWeight.w700,
           ),
@@ -393,7 +386,7 @@ class _RegisterPageState extends State<SignupView> {
           decoration: const InputDecoration(
             labelText: 'Fecha de Nacimiento',
             labelStyle: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontSize: 18.0,
               fontWeight: FontWeight.w700,
             ),
@@ -404,7 +397,7 @@ class _RegisterPageState extends State<SignupView> {
                 ? 'Seleccionar fecha'
                 : '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}',
             style: TextStyle(
-              color: selectedDate == null ? Colors.grey[600] : Colors.white,
+              color: selectedDate == null ? Colors.grey[600] : Colors.black,
               fontSize: 16,
             ),
           ),

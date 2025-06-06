@@ -29,14 +29,14 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: Color.fromARGB(255, 242, 251, 255),
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: Colors.black),
         title: Text(
           'Catálogo de premios',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
-        backgroundColor: Colors.purpleAccent,
+        backgroundColor: Color(0xFF74d4ff),
         leading: Navigator.of(context).canPop()
             ? IconButton(
                 icon: Icon(Icons.arrow_back),
@@ -53,7 +53,7 @@ class HomePage extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 16),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 179, 188, 196),
+              color: Color(0xFFb8e6fe),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(

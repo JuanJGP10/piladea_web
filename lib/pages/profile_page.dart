@@ -25,14 +25,14 @@ class _ProfilePage extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: Color.fromARGB(255, 242, 251, 255),
       appBar: AppBar(
-        backgroundColor: Colors.purpleAccent,
-        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: Color(0xFF74d4ff),
+        iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
           'Perfil',
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: Stack(
@@ -84,7 +84,7 @@ class _ProfilePage extends State<ProfilePage> {
                 '${p.nombre} ${p.apellidos}',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 20,
                 ),
                 textAlign: TextAlign.center,
@@ -112,14 +112,14 @@ class _ProfilePage extends State<ProfilePage> {
         ListTile(
           title: Text(
             title,
-            style: const TextStyle(fontSize: 14, color: Colors.white),
+            style: const TextStyle(fontSize: 14, color: Colors.black),
           ),
           subtitle: Text(
             subtitle,
-            style: const TextStyle(fontSize: 16, color: Colors.white),
+            style: const TextStyle(fontSize: 16, color: Colors.black),
           ),
         ),
-        const Divider(color: Colors.white),
+        const Divider(color: Colors.black),
       ],
     );
   }
@@ -139,7 +139,7 @@ class _ProfilePage extends State<ProfilePage> {
   //       });
   //     },
   //     backgroundColor: Colors.blue,
-  //     child: Icon(Icons.edit, color: Colors.white),
+  //     child: Icon(Icons.edit, color: Colors.black),
   //   );
   // }
 }

@@ -64,11 +64,7 @@ class _LoginViewState extends State<LoginView> {
               child: Text(message, style: const TextStyle(fontSize: 15)),
             ),
             IconButton(
-              icon: const Icon(
-                Icons.close,
-                size: 20,
-                color: Colors.purpleAccent,
-              ),
+              icon: const Icon(Icons.close, size: 20, color: Color(0xFF2b7fff)),
               onPressed: () {
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
               },
@@ -84,7 +80,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: Color.fromARGB(255, 242, 251, 255),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -92,17 +88,10 @@ class _LoginViewState extends State<LoginView> {
             const Text(
               'Log in',
               style: TextStyle(
-                color: Colors.purpleAccent,
+                color: Colors.black87,
                 fontSize: 60.0,
                 fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
-                shadows: [
-                  Shadow(
-                    blurRadius: 15.0,
-                    color: Colors.purpleAccent,
-                    offset: Offset(0, 0),
-                  ),
-                ],
+                fontStyle: FontStyle.normal,
               ),
             ),
             const SizedBox(height: 85),
@@ -116,11 +105,11 @@ class _LoginViewState extends State<LoginView> {
                 width: 600,
                 child: TextField(
                   keyboardType: TextInputType.emailAddress,
-                  style: const TextStyle(color: Colors.white, fontSize: 20.0),
+                  style: const TextStyle(color: Colors.black87, fontSize: 20.0),
                   decoration: const InputDecoration(
                     labelText: 'email',
                     labelStyle: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black87,
                       fontSize: 18.0,
                       fontWeight: FontWeight.w700,
                     ),
@@ -141,11 +130,11 @@ class _LoginViewState extends State<LoginView> {
                 child: TextField(
                   obscureText: _isPasswordHidden,
                   controller: txtPassword,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.black87),
                   decoration: InputDecoration(
                     labelText: 'contraseña',
                     labelStyle: const TextStyle(
-                      color: Colors.white,
+                      color: Colors.black87,
                       fontWeight: FontWeight.w700,
                       fontSize: 18.0,
                     ),
@@ -154,7 +143,7 @@ class _LoginViewState extends State<LoginView> {
                         _isPasswordHidden
                             ? Icons.visibility
                             : Icons.visibility_off,
-                        color: Colors.white,
+                        color: Colors.black87,
                       ),
                       onPressed: () {
                         setState(() {
@@ -190,22 +179,27 @@ class _LoginViewState extends State<LoginView> {
                         );
                       }
                     },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.purple),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF74d4ff),
+              ),
               child: _isLoading
-                  ? const CircularProgressIndicator(color: Colors.white)
-                  : const Text('Log in', style: TextStyle(color: Colors.white)),
+                  ? const CircularProgressIndicator(color: Colors.black87)
+                  : const Text(
+                      'Log in',
+                      style: TextStyle(color: Colors.black87),
+                    ),
             ),
             const SizedBox(height: 15),
             const Text(
               'o continúa con ',
-              style: TextStyle(color: Colors.white, fontSize: 15.0),
+              style: TextStyle(color: Colors.black87, fontSize: 15.0),
             ),
             const SizedBox(height: 30),
             IconButton(
               icon: Icon(
                 FontAwesomeIcons.google,
                 size: 50,
-                color: Colors.white,
+                color: Colors.black87,
               ),
               onPressed: () async {
                 // Acción al pulsar el botón de Gmail
@@ -228,7 +222,7 @@ class _LoginViewState extends State<LoginView> {
               children: [
                 const Text(
                   '¿No eres miembro? ',
-                  style: TextStyle(color: Colors.white, fontSize: 17.0),
+                  style: TextStyle(color: Colors.black87, fontSize: 17.0),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -237,10 +231,9 @@ class _LoginViewState extends State<LoginView> {
                   child: const Text(
                     'Registrate ahora',
                     style: TextStyle(
-                      color: Colors.purpleAccent,
+                      color: Color(0xFF2b7fff),
                       fontSize: 17.0,
                       fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
                     ),
                   ),
                 ),

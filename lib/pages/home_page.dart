@@ -26,36 +26,36 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.black87,
+      backgroundColor: Color.fromARGB(255, 242, 251, 255),
       appBar: AppBar(
-        backgroundColor: Colors.purpleAccent,
+        backgroundColor: Color(0xFF74d4ff),
         title: const Text(
           'Piladea',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.white),
+          icon: const Icon(Icons.menu, color: Colors.black87),
           onPressed: () {
             _scaffoldKey.currentState?.openDrawer();
           },
         ),
       ),
       drawer: Drawer(
-        backgroundColor: Colors.black54,
+        backgroundColor: Color.fromARGB(255, 242, 251, 255),
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.purpleAccent),
+              decoration: BoxDecoration(color: Color(0xFF74d4ff)),
               child: Text(
                 'Menú',
-                style: TextStyle(color: Colors.white, fontSize: 24),
+                style: TextStyle(color: Colors.black, fontSize: 24),
               ),
             ),
             ListTile(
               title: const Text(
                 'Mis Destinos',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
               ),
               onTap: () {
                 // Acción para la opción 1
@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               title: const Text(
                 'Catálogo de premios',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
               ),
               onTap: () {
                 Navigator.of(context).push(
@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               title: const Text(
                 'Mis cupones',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
               ),
               onTap: () {
                 Navigator.of(
@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               title: const Text(
                 'Perfil',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
               ),
               onTap: () {
                 // Navegar a la página de perfil
@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               title: const Text(
                 'Cerrar sesión',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
               ),
               onTap: () {
                 showDialog(

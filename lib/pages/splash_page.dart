@@ -20,15 +20,15 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<void> _navigateToNextPage() async {
     await Future.delayed(const Duration(seconds: 2));
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const Inicio()),
-    );
+    Navigator.of(
+      context,
+    ).pushReplacement(MaterialPageRoute(builder: (context) => const Inicio()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87, // Color de fondo
+      backgroundColor: Color.fromARGB(255, 242, 251, 255), // Color de fondo
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -42,22 +42,10 @@ class _SplashPageState extends State<SplashPage> {
             const Text(
               'Piladea',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: 55,
                 fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
-                shadows: [
-                  Shadow(
-                    blurRadius: 25.0,
-                    color:Colors.white,
-                    offset: Offset(0, 0),
-                  ),
-                  Shadow(
-                    blurRadius: 35.0,
-                    color:Colors.white,
-                    offset: Offset(0, 0),
-                  ),
-                ],
+                fontStyle: FontStyle.normal,
               ),
             ),
           ],
