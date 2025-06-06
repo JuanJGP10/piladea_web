@@ -1,9 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:piladea_web/pages/login_view.dart';
+import 'dart:async';
 
-class Inicio extends StatelessWidget {
+class Inicio extends StatefulWidget {
   static String id = 'inicio';
   const Inicio({super.key});
+
+   @override
+  State<Inicio> createState() => _InicioState();
+}
+
+class _InicioState extends State<Inicio> {
+  final List<String> _imagePaths = [
+    'assets/images/piladea_logo.png',
+    'assets/images/img1.png',
+    'assets/images/img2.png',
+    'assets/images/img3.png',
+  ];
+  int _currentImageIndex = 0;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
+      setState(() {
+        _currentImageIndex = (_currentImageIndex + 1) % _imagePaths.length;
+      });
+    });
+}
+@override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +74,7 @@ class Inicio extends StatelessWidget {
 
             /// Contenido dividido: texto a la izquierda, imagen a la derecha
             Expanded(
+              child: SingleChildScrollView(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -53,7 +85,7 @@ class Inicio extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Text(
-                          '¿Qué es?',
+                          'Tu bici es tu tarjeta de puntos. ¡A rodar que hay premios!',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 40.0,
@@ -82,13 +114,14 @@ class Inicio extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Image.asset(
-                      'assets/images/piladea_logo.png', // Asegúrate de que la imagen exista
+                       _imagePaths[_currentImageIndex], // Asegúrate de que la imagen exista
                       width: size.width * 0.25,
                       height: size.width * 0.25,
                       fit: BoxFit.contain,
                     ),
                   ),
                 ],
+              ),
               ),
             ),
 
