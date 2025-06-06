@@ -21,7 +21,6 @@ class _LoginViewState extends State<LoginView> {
   bool _isLoading = false; // Por si quieres mostrar progreso
   bool _isPasswordHidden = true;
 
-
   @override
   void initState() {
     super.initState();
@@ -210,6 +209,8 @@ class _LoginViewState extends State<LoginView> {
                 final user = await authController.loginWithGoogle();
 
                 if (user != null) {
+                  await PerfilCRUD.instance.findPerfil(user.uid);
+                  print(PerfilCRUD.currentProfile);
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const HomePage()),

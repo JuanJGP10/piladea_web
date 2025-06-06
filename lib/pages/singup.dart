@@ -235,7 +235,6 @@ class _RegisterPageState extends State<SignupView> {
         );
         await p.addPerfil(p1);
         await PerfilCRUD.instance.findPerfil(p1.uID!);
-        print(p1.rutaImagen);
 
         await Future.delayed(const Duration(seconds: 2));
         Navigator.pushReplacement(
