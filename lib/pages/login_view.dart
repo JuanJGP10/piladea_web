@@ -19,6 +19,8 @@ class _LoginViewState extends State<LoginView> {
   late TextEditingController txtEmail;
   late TextEditingController txtPassword;
   bool _isLoading = false; // Por si quieres mostrar progreso
+  bool _isPasswordHidden = true;
+
 
   @override
   void initState() {
@@ -136,17 +138,30 @@ class _LoginViewState extends State<LoginView> {
                 height: 60,
                 width: 600,
                 child: TextField(
-                  obscureText: true,
+                  obscureText: _isPasswordHidden,
+                  controller: txtPassword,
                   style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'contraseña',
-                    labelStyle: TextStyle(
+                    labelStyle: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
                       fontSize: 18.0,
                     ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordHidden
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordHidden = !_isPasswordHidden;
+                        });
+                      },
+                    ),
                   ),
-                  controller: txtPassword,
                 ),
               ),
             ),
