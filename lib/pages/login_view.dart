@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:piladea_web/Controller/perfil_crud.dart';
-import 'package:piladea_web/Model/perfil.dart';
 import 'package:piladea_web/Pages/home_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:piladea_web/pages/auth_controller.dart';
+import 'package:piladea_web/Authentication/structures/controllers/auth_controller.dart';
 
 class LoginView extends StatefulWidget {
   static String id = 'login_view';
@@ -16,6 +17,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  AuthController authController = Get.put(AuthController());
   late TextEditingController txtEmail;
   late TextEditingController txtPassword;
   bool _isLoading = false; // Por si quieres mostrar progreso
@@ -206,21 +208,17 @@ class _LoginViewState extends State<LoginView> {
                 color: Colors.white,
               ),
               onPressed: () async {
+                // Acción al pulsar el botón de Gmail
+                // Acción al pulsar el botón de Gmail
                 final user = await authController.loginWithGoogle();
-
                 if (user != null) {
-                  await PerfilCRUD.instance.findPerfil(user.uid);
-                  print(PerfilCRUD.currentProfile);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
+                    MaterialPageRoute(builder: (context) => HomePage()),
                   );
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Error al iniciar sesión con Google'),
-                    ),
-                  );
+                  // Manejar el error de inicio de sesión aquí
+                  print('Error al iniciar sesión con Google');
                 }
               },
             ),
