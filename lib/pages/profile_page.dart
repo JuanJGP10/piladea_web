@@ -19,6 +19,7 @@ class _ProfilePage extends State<ProfilePage> {
   void initState() {
     super.initState();
     p = widget.perfil;
+    print("Ruta imagen perfil: ${p.rutaImagen}");
   }
 
   @override
@@ -74,9 +75,7 @@ class _ProfilePage extends State<ProfilePage> {
       padding: const EdgeInsets.all(20.0),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: 400,
-          ), // Ajusta el ancho máximo
+          constraints: const BoxConstraints(maxWidth: 400),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
