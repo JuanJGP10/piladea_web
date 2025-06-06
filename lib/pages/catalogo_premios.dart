@@ -17,7 +17,7 @@ class _MisDestinosPageState extends State<CatalogoPremiosPage> {
     return Scaffold(
       backgroundColor: Colors.black87,
       appBar: AppBar(
-        title: Text('Mis Destinos'),
+        title: Text('Catálogo de premios'),
         backgroundColor: Colors.purpleAccent,
       ),
       body: Center(
