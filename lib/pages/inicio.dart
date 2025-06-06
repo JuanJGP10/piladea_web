@@ -41,100 +41,117 @@ class _InicioState extends State<Inicio> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 242, 251, 255),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 60),
-            const Center(
-              child: Text(
+      backgroundColor: const Color(0xFFF2FBFF),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 50),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
                 'Piladea',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 60.0,
                   fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.normal,
                 ),
               ),
-            ),
-            const SizedBox(height: 60),
-
-            /// Contenido dividido: texto a la izquierda, imagen a la derecha
-            Expanded(
-              child: SingleChildScrollView(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Columna izquierda: texto
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'Tu bici es tu tarjeta de puntos. ¡A rodar que hay premios!',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 40.0,
-                              fontWeight: FontWeight.bold,
+              const SizedBox(height: 50),
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Texto a la izquierda
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text(
+                              'Tu bici es tu tarjeta de puntos. ¡A rodar que hay premios!',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 36.0,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 20),
-                          Text(
-                            'Aplicación web donde se puede ganar puntos (bicicoins) '
-                            'haciendo recorridos en bici en el Pilar de la Horadada. '
-                            '\nDichos puntos se podrán canjear por distintos premios '
-                            'de diferentes locales. \nCuantos más km en bici, más puntos. '
-                            '¿Te apuntas?',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20.0,
+                            SizedBox(height: 20),
+                            Text(
+                              'Aplicación web donde se puede ganar puntos (bicicoins) '
+                              'haciendo recorridos en bici en el Pilar de la Horadada. '
+                              '\nDichos puntos se podrán canjear por distintos premios '
+                              'de diferentes locales.\nCuantos más km en bici, más puntos. '
+                              '¿Te apuntas?',
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 18.0,
+                                height: 1.4,
+                              ),
                             ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 30),
+                      // Imagen a la derecha
+                      Expanded(
+                        flex: 2,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.asset(
+                            _imagePaths[_currentImageIndex],
+                            height: size.width * 0.25,
+                            fit: BoxFit.contain,
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-
-                    const SizedBox(width: 30),
-
-                    // Columna derecha: imagen o espacio
-                    Expanded(
-                      flex: 1,
-                      child: Image.asset(
-                        _imagePaths[_currentImageIndex], // Asegúrate de que la imagen exista
-                        width: size.width * 0.25,
-                        height: size.width * 0.25,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ],
-                ),
+                    ],
+                  );
+                },
               ),
-            ),
-
-            const SizedBox(height: 30),
-
-            Center(
-              child: ElevatedButton(
+              const SizedBox(height: 40),
+              ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, LoginView.id);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF74d4ff),
+                  backgroundColor: const Color(0xFF74D4FF),
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 30,
-                    vertical: 15,
+                    horizontal: 40,
+                    vertical: 18,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
                   ),
                 ),
                 child: const Text(
                   'Iniciar Sesión',
-                  style: TextStyle(color: Colors.black, fontSize: 20.0),
+                  style: TextStyle(color: Colors.black, fontSize: 18),
                 ),
               ),
-            ),
-            const SizedBox(height: 40),
-          ],
+              const SizedBox(height: 60),
+
+              // Sección opcional de pasos o beneficios
+              const Text(
+                '¿Cómo funciona?',
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 15),
+              const Text(
+                '1. Regístrate o inicia sesión\n'
+                '2. Usa tu bici para recorrer el municipio\n'
+                '3. Gana bicicoins por cada trayecto\n'
+                '4. Canjea puntos por recompensas',
+                style: TextStyle(
+                  fontSize: 16,
+                  height: 1.5,
+                  color: Colors.black87,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 40),
+            ],
+          ),
         ),
       ),
     );
