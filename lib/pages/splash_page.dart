@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:piladea_web/pages//login_view.dart';
 import 'package:piladea_web/pages/inicio.dart';
 
 class SplashPage extends StatefulWidget {

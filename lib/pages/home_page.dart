@@ -9,7 +9,6 @@ import 'package:piladea_web/Pages/profile_page.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:open_route_service/open_route_service.dart';
-import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 // import 'package:piladea_web/Controller/perfil_CRUD.dart';
 // import 'package:piladea_web/Pages/login_view.dart';

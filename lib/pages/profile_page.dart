@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 // import 'package:piladea_web/pages/profileEdit_page.dart';
-
-import '../../Controller/perfil_CRUD.dart';
 import '../../Model/perfil.dart';
 
 class ProfilePage extends StatefulWidget {
