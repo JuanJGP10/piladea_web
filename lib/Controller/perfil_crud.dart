@@ -15,12 +15,10 @@ class PerfilCRUD {
   /// CREATE
   Future<void> addPerfil(Perfil? perfil) async {
     if (perfil == null || perfil.uID == null) {
-      print('❌ Perfil o UID es null. No se puede guardar.');
       return;
     }
 
     perfil.fechaCreacion = DateTime.now(); // Asegura que este campo exista
-    print('✅ Guardando perfil: ${perfil.toJSON()}');
 
     await perfiles.add(perfil.toJSON());
   }

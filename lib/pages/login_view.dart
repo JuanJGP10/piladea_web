@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:piladea_web/Controller/perfil_crud.dart';
+import 'package:piladea_web/Model/perfil.dart';
 import 'package:piladea_web/Pages/home_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piladea_web/pages/auth_controller.dart';
@@ -175,10 +176,7 @@ class _LoginViewState extends State<LoginView> {
               style: ElevatedButton.styleFrom(backgroundColor: Colors.purple),
               child: _isLoading
                   ? const CircularProgressIndicator(color: Colors.white)
-                  : const Text(
-                      'Log in',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  : const Text('Log in', style: TextStyle(color: Colors.white)),
             ),
             const SizedBox(height: 15),
             const Text(
