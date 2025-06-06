@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:piladea_web/Authentication/Services/auth_firebase_repository.dart';
 import 'package:piladea_web/Controller/perfil_crud.dart';
-import 'package:piladea_web/Model/perfil.dart';
 import 'package:piladea_web/Pages/catalogo_premios.dart';
 import 'package:piladea_web/Pages/cupones_page.dart';
 import 'package:piladea_web/Pages/login_view.dart';
 import 'package:piladea_web/Pages/mis_destinos_page.dart';
 import 'package:piladea_web/Pages/profile_page.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:open_route_service/open_route_service.dart';
+import 'package:http/http.dart' as http;
+import 'package:geolocator/geolocator.dart';
 // import 'package:piladea_web/Controller/perfil_CRUD.dart';
 // import 'package:piladea_web/Pages/login_view.dart';
 // import 'package:piladea_web/Authentication/services/auth_firebase_repository.dart';
@@ -21,6 +25,56 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  LatLng _origen = LatLng(
+    37.857149364541726,
+    -0.7886004260761562,
+  ); // Pilar de la Horadada
+  LatLng? _destino;
+  List<LatLng> _ruta = [];
+  final MapController _mapController = MapController();
+
+  Future<void> obtenerUbicacionYActualizarMapa() async {
+    try {
+      bool servicioHabilitado = await Geolocator.isLocationServiceEnabled();
+      if (!servicioHabilitado) {
+        throw Exception('Servicio de ubicación no está habilitado.');
+      }
+
+      LocationPermission permiso = await Geolocator.checkPermission();
+
+      if (permiso == LocationPermission.denied) {
+        permiso = await Geolocator.requestPermission();
+        if (permiso == LocationPermission.denied) {
+          throw Exception('Permiso de ubicación denegado por el usuario.');
+        }
+      }
+
+      if (permiso == LocationPermission.deniedForever) {
+        throw Exception('Permiso de ubicación denegado permanentemente.');
+      }
+
+      // Este método es el que debe lanzar la petición real al navegador
+      Position posicion = await Geolocator.getCurrentPosition();
+
+      print('Ubicación actual: ${posicion.latitude}, ${posicion.longitude}');
+
+      setState(() {
+        _origen = LatLng(posicion.latitude, posicion.longitude);
+      });
+
+      // Centrar el mapa si ya está listo
+      _mapController.move(_origen, 14.0);
+    } catch (e) {
+      print('Error al obtener ubicación: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    obtenerUbicacionYActualizarMapa();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -166,65 +220,73 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      // body: Stack(
-      //   children: [
-      //     if (!_showSecondMap) // Mostrar MapScreen primero
-      //       MapPage(
-      //         circleLayer: CircleLayer(
-      //           circles: [
-      //             CircleMarker(
-      //               point: LatLng(37.87604842629718, -0.8064902376526171),
-      //               color: Colors.blue.withOpacity(0.1),
-      //               borderStrokeWidth: 3.0,
-      //               borderColor: Colors.blue,
-      //               radius: 5800, // radio en metros
-      //               useRadiusInMeter: true,
-      //             ),
-      //           ],
-      //         ),
-      //         onStartRoute: _onStartRoute,
-      //         selectedLocation: widget.ubicacion != null
-      //             ? LatLng(
-      //                 double.parse(
-      //                   widget.ubicacion!.split(',')[0].trim(),
-      //                 ), // Latitud
-      //                 double.parse(
-      //                   widget.ubicacion!.split(',')[1].trim(),
-      //                 ), // Longitud
-      //               )
-      //             : _selectedLocation,
-      //       )
-      //     else
-      //       OpenStreetMapSearchAndPick(
-      //         onPicked: (pickedData) {
-      //           _selectedLocation = LatLng(
-      //             pickedData.latLong.latitude,
-      //             pickedData.latLong.longitude,
-      //           );
-      //           print(pickedData.address);
-      //         },
-      //         onStartRoute: () {
-      //           widget.ubicacion = null;
-      //           _previousMap = OpenStreetMapSearchAndPick(
-      //             onPicked: (pickedData) {
-      //               _selectedLocation = LatLng(
-      //                 pickedData.latLong.latitude,
-      //                 pickedData.latLong.longitude,
-      //               );
-      //               print(pickedData.address);
-      //             },
-      //             onStartRoute: _toggleMap,
-      //           );
-      //           _toggleMap();
-      //         },
-      //       ),
-      //   ],
-      // ),
-      /*labelStyle: TextStyle(fontSize: 18.0),
-            onTap: () {
-              setState(() {
-                _showSecondMap = true; // Mostrar OpenStreetMapSearchAndPick
-              });*/
+      body: FlutterMap(
+        mapController: _mapController,
+        options: MapOptions(
+          initialCenter: _origen,
+          initialZoom: 14,
+          onTap: (tapPosition, point) async {
+            setState(() {
+              _destino = point;
+            });
+
+            final openrouteservice = OpenRouteService(
+              apiKey:
+                  '5b3ce3597851110001cf6248e217dad80f7d43c3a76b920a5528ce8f',
+            );
+
+            final coords = await openrouteservice.directionsRouteCoordsGet(
+              startCoordinate: ORSCoordinate(
+                latitude: _origen.latitude,
+                longitude: _origen.longitude,
+              ),
+              endCoordinate: ORSCoordinate(
+                latitude: point.latitude,
+                longitude: point.longitude,
+              ),
+            );
+
+            setState(() {
+              _ruta = coords
+                  .map((c) => LatLng(c.latitude, c.longitude))
+                  .toList();
+            });
+          },
+        ),
+        children: [
+          TileLayer(
+            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            subdomains: ['a', 'b', 'c'],
+          ),
+          MarkerLayer(
+            markers: [
+              Marker(
+                point: _origen,
+                width: 40,
+                height: 40,
+                child: const Icon(
+                  Icons.location_on,
+                  color: Colors.green,
+                  size: 40,
+                ),
+              ),
+              if (_destino != null)
+                Marker(
+                  point: _destino!,
+                  width: 40,
+                  height: 40,
+                  child: const Icon(Icons.flag, color: Colors.red, size: 40),
+                ),
+            ],
+          ),
+          if (_ruta.isNotEmpty)
+            PolylineLayer(
+              polylines: [
+                Polyline(points: _ruta, color: Colors.blue, strokeWidth: 4.0),
+              ],
+            ),
+        ],
+      ),
     );
   }
 }

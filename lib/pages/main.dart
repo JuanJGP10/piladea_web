@@ -29,8 +29,8 @@ class MyApp extends StatelessWidget {
         SplashPage.id: (context) => const SplashPage(),
         LoginView.id: (context) => LoginView(),
         SignupView.id: (context) => SignupView(),
-        //HomePage.id: (context) => const HomePage(),
 
+        //HomePage.id: (context) => const HomePage(),
       },
       //routes: customRoutes,
       //home: const MyHomePage(title: 'Inicio de Sesión'),
