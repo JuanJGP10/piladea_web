@@ -13,9 +13,9 @@ class Perfil {
   String? uID;
   String? rutaImagen;
   int bicicoins;
-  List<String> cupones;
-  List<String> trayectos;
-  List<String> destinos;
+  List<dynamic> cupones;
+  List<dynamic> trayectos;
+  List<dynamic> destinos;
   String? docID;
 
   Perfil({
@@ -54,18 +54,18 @@ class Perfil {
     Map<String, dynamic> json,
     DateTime dateTime,
     DateTime datetime2,
-  ) : nombre = json['nombre'],
-      apellidos = json['apellidos'],
+  ) : nombre = json['nombre'] ?? '',
+      apellidos = json['apellidos'] ?? '',
       fechaNacimiento = dateTime,
-      correo = json['correo'],
-      sexo = json['sexo'],
-      uID = json['uID'],
-      rutaImagen = json['rutaImagen'],
-      bicicoins = json['bicicoins'],
-      destinos = json['destinos'],
-      cupones = json['cupones'],
-      trayectos = json['trayectos'],
-      admin = json['admin'],
+      correo = json['correo'] ?? '',
+      sexo = json['sexo'] ?? '',
+      uID = json['uID'] ?? '',
+      rutaImagen = json['rutaImagen'] ?? '',
+      bicicoins = json['bicicoins'] ?? 0,
+      destinos = json['destinos'] ?? [],
+      cupones = json['cupones'] ?? [],
+      trayectos = json['trayectos'] ?? [],
+      admin = json['admin'] ?? false,
       fechaCreacion = datetime2;
 
   Map<String, dynamic> toJSON() {

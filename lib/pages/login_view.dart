@@ -39,6 +39,7 @@ class _LoginViewState extends State<LoginView> {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: contra);
       print("-------------------${userCredential.user!.uid}");
+
       await PerfilCRUD.instance.findPerfil(userCredential.user!.uid);
 
       return userCredential;

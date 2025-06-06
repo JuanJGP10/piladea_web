@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                       MaterialPageRoute(builder: (_) => LoginView()),
                     );
                   } else {
-                    // Acción para el botón "No"
+                    print(PerfilCRUD.currentProfile);
                   }
                 });
               },
