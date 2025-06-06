@@ -24,6 +24,7 @@ class _ProfilePage extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black87,
       appBar: AppBar(
         backgroundColor: Colors.purpleAccent,
         title: const Text(
@@ -71,69 +72,55 @@ class _ProfilePage extends State<ProfilePage> {
   Widget _buildProfilDetails() {
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: Column(
-        children: [
-          Text(
-            '${p.nombre} ${p.apellidos}',
-            style: const TextStyle(fontWeight: FontWeight.bold),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: 400,
+          ), // Ajusta el ancho máximo
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                '${p.nombre} ${p.apellidos}',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              _buildInfoTile("Nombre", p.nombre!),
+              _buildInfoTile("Apellido", p.apellidos!),
+              _buildInfoTile("Email", p.correo!),
+              _buildInfoTile("Contraseña", "********"),
+              _buildInfoTile(
+                "Fecha de Nacimiento",
+                '${p.fechaNacimiento.day}/${p.fechaNacimiento.month}/${p.fechaNacimiento.year}',
+              ),
+              _buildInfoTile("Género", p.sexo!),
+            ],
           ),
-          const SizedBox(height: 10),
-          ListTile(
-            title: const Text(
-              "Nombre",
-              style: TextStyle(fontSize: 14, color: Colors.grey),
-            ),
-            subtitle: Text('${p.nombre}', style: const TextStyle(fontSize: 16)),
-          ),
-          const Divider(),
-          ListTile(
-            title: const Text(
-              "Apellido",
-              style: TextStyle(fontSize: 14, color: Colors.grey),
-            ),
-            subtitle: Text(
-              '${p.apellidos}',
-              style: const TextStyle(fontSize: 16),
-            ),
-          ),
-          const Divider(),
-          ListTile(
-            title: const Text(
-              "Email",
-              style: TextStyle(fontSize: 14, color: Colors.grey),
-            ),
-            subtitle: Text('${p.correo}', style: const TextStyle(fontSize: 16)),
-          ),
-          const Divider(),
-          const ListTile(
-            title: Text(
-              "Contraseña",
-              style: TextStyle(fontSize: 14, color: Colors.grey),
-            ),
-            subtitle: Text("********", style: TextStyle(fontSize: 16)),
-          ),
-          const Divider(),
-          ListTile(
-            title: const Text(
-              "Fecha de Nacimiento",
-              style: TextStyle(fontSize: 14, color: Colors.grey),
-            ),
-            subtitle: Text(
-              '${p.fechaNacimiento.day}/${p.fechaNacimiento.month}/${p.fechaNacimiento.year}',
-              style: const TextStyle(fontSize: 16),
-            ),
-          ),
-          const Divider(),
-          ListTile(
-            title: const Text(
-              "Género",
-              style: TextStyle(fontSize: 14, color: Colors.grey),
-            ),
-            subtitle: Text('${p.sexo}', style: const TextStyle(fontSize: 16)),
-          ),
-          const Divider(),
-        ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildInfoTile(String title, String subtitle) {
+    return Column(
+      children: [
+        ListTile(
+          title: Text(
+            title,
+            style: const TextStyle(fontSize: 14, color: Colors.white),
+          ),
+          subtitle: Text(
+            subtitle,
+            style: const TextStyle(fontSize: 16, color: Colors.white),
+          ),
+        ),
+        const Divider(color: Colors.white),
+      ],
     );
   }
 
@@ -155,10 +142,4 @@ class _ProfilePage extends State<ProfilePage> {
   //     child: Icon(Icons.edit, color: Colors.white),
   //   );
   // }
-
-  static Perfil? rellenarPerfil() {
-    print(PerfilCRUD.currentProfile == null);
-    Perfil? p = PerfilCRUD.currentProfile;
-    return p;
-  }
 }
