@@ -20,22 +20,10 @@ class _CatalogoPremiosPageState extends State<CatalogoPremiosPage> {
 
 class HomePage extends StatelessWidget {
   final List<Map<String, String>> items = [
-    {
-      'image': 'assets/images/piladea_logo.png',
-      'text': 'Elemento 1',
-    },
-    {
-      'image': 'assets/images/piladea_logo.png',
-      'text': 'Elemento 2',
-    },
-    {
-      'image': 'assets/images/piladea_logo.png',
-      'text': 'Elemento 3',
-    },
-    {
-      'image': 'assets/images/piladea_logo.png',
-      'text': 'Elemento 4',
-    },
+    {'image': 'assets/images/piladea_logo.png', 'text': 'Elemento 1'},
+    {'image': 'assets/images/piladea_logo.png', 'text': 'Elemento 2'},
+    {'image': 'assets/images/piladea_logo.png', 'text': 'Elemento 3'},
+    {'image': 'assets/images/piladea_logo.png', 'text': 'Elemento 4'},
   ];
 
   @override
@@ -43,13 +31,17 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black87,
       appBar: AppBar(
-        title: Text('Catálogo de premios'),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          'Catálogo de premios',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.purpleAccent,
         leading: Navigator.of(context).canPop()
             ? IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        )
+                icon: Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              )
             : null,
       ),
       body: ListView.builder(
