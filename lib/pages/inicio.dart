@@ -64,8 +64,8 @@ class Inicio extends StatelessWidget {
                         Text(
                           'Aplicación web donde se puede ganar puntos (bicicoins) '
                               'haciendo recorridos en bici en el Pilar de la Horadada. '
-                              'Dichos puntos se podrán canjear por distintos premios '
-                              'de diferentes locales. Cuantos más km en bici, más puntos. '
+                              '\nDichos puntos se podrán canjear por distintos premios '
+                              'de diferentes locales. \nCuantos más km en bici, más puntos. '
                               '¿Te apuntas?',
                           style: TextStyle(
                             color: Colors.white,
