@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:piladea_web/Authentication/Services/auth_firebase_repository.dart';
 import 'package:piladea_web/Controller/perfil_crud.dart';
+import 'package:piladea_web/Model/perfil.dart';
 import 'package:piladea_web/Pages/catalogo_premios.dart';
 import 'package:piladea_web/Pages/cupones_page.dart';
 import 'package:piladea_web/Pages/login_view.dart';
@@ -92,9 +93,13 @@ class _HomePageState extends State<HomePage> {
               ),
               onTap: () {
                 // Navegar a la página de perfil
-                Navigator.of(
-                  context,
-                ).push(MaterialPageRoute(builder: (_) => const ProfilePage()));
+
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        ProfilePage(perfil: PerfilCRUD.currentProfile!),
+                  ),
+                );
               },
             ),
             // if (PerfilCRUD.currentProfile!.admin)

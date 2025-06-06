@@ -5,19 +5,27 @@ import '../../Controller/perfil_CRUD.dart';
 import '../../Model/perfil.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  final Perfil perfil;
+  ProfilePage({Key? key, required this.perfil}) : super(key: key);
 
   @override
   _ProfilePage createState() => _ProfilePage();
 }
 
 class _ProfilePage extends State<ProfilePage> {
-  Perfil p = rellenarPerfil() as Perfil;
+  late Perfil p;
+
+  @override
+  void initState() {
+    super.initState();
+    p = widget.perfil;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.purpleAccent,
         title: const Text(
           'Perfil',
           textAlign: TextAlign.center,
@@ -149,7 +157,7 @@ class _ProfilePage extends State<ProfilePage> {
   // }
 
   static Perfil? rellenarPerfil() {
-    print(PerfilCRUD.currentProfile);
+    print(PerfilCRUD.currentProfile == null);
     Perfil? p = PerfilCRUD.currentProfile;
     return p;
   }
