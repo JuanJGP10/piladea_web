@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:piladea_web/Controller/perfil_crud.dart';
+import 'package:piladea_web/pages/profileEdit_page.dart';
+
 // import 'package:piladea_web/pages/profileEdit_page.dart';
 import '../../Model/perfil.dart';
 
@@ -12,13 +15,6 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePage extends State<ProfilePage> {
   late Perfil p;
-
-  @override
-  void initState() {
-    super.initState();
-    p = widget.perfil;
-    print("Ruta imagen perfil: ${p.rutaImagen}");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,25 +43,56 @@ class _ProfilePage extends State<ProfilePage> {
               ],
             ),
           ),
-          // Positioned(
-          //   bottom: 20.0, // Ajusta la posición vertical del botón
-          //   right: 20.0, // Ajusta la posición horizontal del botón
-          //   child: _buildEditButton(context),
-          // ),
+          Positioned(
+            bottom: 20.0, // Ajusta la posición vertical del botón
+            right: 20.0, // Ajusta la posición horizontal del botón
+            child: _buildEditButton(context),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildProfileImage() {
-    return Center(
-      child: SizedBox(
-        width: 200,
-        height: 200,
-        child: ClipOval(
-          child: Image.asset('${p.rutaImagen}', fit: BoxFit.fitWidth, scale: 1),
+  @override
+  void initState() {
+    super.initState();
+    p = widget.perfil;
+  }
+
+  Widget _buildEditButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => EditProfileScreen(perfil: p)),
+        ).then((perfilActualizado) {
+          if (perfilActualizado != null) {
+            setState(() {
+              p = perfilActualizado;
+            });
+          }
+        });
+      },
+      backgroundColor: Colors.blue,
+      child: Icon(Icons.edit, color: Colors.black),
+    );
+  }
+
+  Widget _buildInfoTile(String title, String subtitle) {
+    return Column(
+      children: [
+        ListTile(
+          title: Text(
+            title,
+            style: const TextStyle(fontSize: 14, color: Colors.black),
+          ),
+          subtitle: Text(
+            subtitle,
+            style: const TextStyle(fontSize: 16, color: Colors.black),
+          ),
         ),
-      ),
+        const Divider(color: Colors.black),
+      ],
     );
   }
 
@@ -104,40 +131,15 @@ class _ProfilePage extends State<ProfilePage> {
     );
   }
 
-  Widget _buildInfoTile(String title, String subtitle) {
-    return Column(
-      children: [
-        ListTile(
-          title: Text(
-            title,
-            style: const TextStyle(fontSize: 14, color: Colors.black),
-          ),
-          subtitle: Text(
-            subtitle,
-            style: const TextStyle(fontSize: 16, color: Colors.black),
-          ),
+  Widget _buildProfileImage() {
+    return Center(
+      child: SizedBox(
+        width: 200,
+        height: 200,
+        child: ClipOval(
+          child: Image.asset('${p.rutaImagen}', fit: BoxFit.fitWidth, scale: 1),
         ),
-        const Divider(color: Colors.black),
-      ],
+      ),
     );
   }
-
-  // Widget _buildEditButton(BuildContext context) {
-  //   return FloatingActionButton(
-  //     onPressed: () {
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => const EditProfileScreen()),
-  //       ).then((perfilActualizado) {
-  //         if (perfilActualizado != null) {
-  //           setState(() {
-  //             p = rellenarPerfil() as Perfil;
-  //           });
-  //         }
-  //       });
-  //     },
-  //     backgroundColor: Colors.blue,
-  //     child: Icon(Icons.edit, color: Colors.black),
-  //   );
-  // }
 }

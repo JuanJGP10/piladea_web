@@ -35,6 +35,37 @@ class Perfil {
     this.docID,
   });
 
+  Perfil.sinFechaCreacion({
+    required bool admin,
+    String? nombre,
+    String? apellidos,
+    String? correo,
+    String? sexo,
+    required DateTime fechaNacimiento,
+    String? uID,
+    String? rutaImagen,
+    int bicicoins = 0,
+    List cupones = const [],
+    List trayectos = const [],
+    List destinos = const [],
+    String? docID,
+  }) : this(
+         admin: admin,
+         nombre: nombre,
+         apellidos: apellidos,
+         correo: correo,
+         sexo: sexo,
+         fechaNacimiento: fechaNacimiento,
+         fechaCreacion: DateTime.now(),
+         uID: uID,
+         rutaImagen: rutaImagen,
+         bicicoins: bicicoins,
+         cupones: cupones,
+         trayectos: trayectos,
+         destinos: destinos,
+         docID: docID,
+       );
+
   Perfil.fromJson(Map<String, dynamic> json)
     : nombre = json['nombre'],
       apellidos = json['apellidos'],

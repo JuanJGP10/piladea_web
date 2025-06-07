@@ -84,154 +84,169 @@ class _LoginViewState extends State<LoginView> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           child: Center(
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                const Text(
-                  'Log in',
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 60.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 50),
-                SizedBox(
-                  width: 600,
-                  child: TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    style: const TextStyle(
-                      color: Colors.black87,
-                      fontSize: 20.0,
-                    ),
-                    decoration: const InputDecoration(
-                      labelText: 'email',
-                      labelStyle: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    controller: txtEmail,
-                  ),
-                ),
-                const SizedBox(height: 30),
-                SizedBox(
-                  width: 600,
-                  child: TextField(
-                    obscureText: _isPasswordHidden,
-                    controller: txtPassword,
-                    style: const TextStyle(color: Colors.black87),
-                    decoration: InputDecoration(
-                      labelText: 'contraseña',
-                      labelStyle: const TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18.0,
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isPasswordHidden
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: Colors.black87,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _isPasswordHidden = !_isPasswordHidden;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 40),
-                ElevatedButton(
-                  onPressed: _isLoading
-                      ? null
-                      : () async {
-                          setState(() => _isLoading = true);
-                          UserCredential? credenciales = await login(
-                            txtEmail.text,
-                            txtPassword.text,
-                          );
-                          setState(() => _isLoading = false);
-
-                          if (credenciales != null &&
-                              credenciales.user != null) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const HomePage(),
-                              ),
-                            );
-                          } else {
-                            _showSnackBar(
-                              'El correo o la contraseña son incorrectos',
-                            );
-                          }
-                        },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF74d4ff),
-                  ),
-                  child: _isLoading
-                      ? const CircularProgressIndicator(color: Colors.black87)
-                      : const Text(
-                          'Log in',
-                          style: TextStyle(color: Colors.black87),
-                        ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'o continúa con ',
-                  style: TextStyle(color: Colors.black87, fontSize: 15.0),
-                ),
-                const SizedBox(height: 30),
-                IconButton(
-                  icon: const Icon(
-                    FontAwesomeIcons.google,
-                    size: 50,
-                    color: Colors.black87,
-                  ),
-                  onPressed: () async {
-                    final user = await authController.loginWithGoogle();
-                    if (user != null) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomePage(),
-                        ),
-                      );
-                    } else {
-                      print('Error al iniciar sesión con Google');
-                    }
-                  },
-                ),
-                const SizedBox(height: 50),
-                Row(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight:
+                    MediaQuery.of(context).size.height -
+                    40, // ajusta según padding
+              ),
+              child: IntrinsicHeight(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const SizedBox(height: 20),
                     const Text(
-                      '¿No eres miembro? ',
-                      style: TextStyle(color: Colors.black87, fontSize: 17.0),
+                      'Log in',
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 60.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, 'signup_view');
-                      },
-                      child: const Text(
-                        'Regístrate ahora',
-                        style: TextStyle(
-                          color: Color(0xFF2b7fff),
-                          fontSize: 17.0,
-                          fontWeight: FontWeight.bold,
+                    const SizedBox(height: 50),
+                    SizedBox(
+                      width: 600,
+                      child: TextField(
+                        keyboardType: TextInputType.emailAddress,
+                        style: const TextStyle(
+                          color: Colors.black87,
+                          fontSize: 20.0,
+                        ),
+                        decoration: const InputDecoration(
+                          labelText: 'Email',
+                          labelStyle: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        controller: txtEmail,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    SizedBox(
+                      width: 600,
+                      child: TextField(
+                        obscureText: _isPasswordHidden,
+                        controller: txtPassword,
+                        style: const TextStyle(color: Colors.black87),
+                        decoration: InputDecoration(
+                          labelText: 'Contraseña',
+                          labelStyle: const TextStyle(
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18.0,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordHidden
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.black87,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordHidden = !_isPasswordHidden;
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ),
+                    const SizedBox(height: 40),
+                    ElevatedButton(
+                      onPressed: _isLoading
+                          ? null
+                          : () async {
+                              setState(() => _isLoading = true);
+                              UserCredential? credenciales = await login(
+                                txtEmail.text,
+                                txtPassword.text,
+                              );
+                              setState(() => _isLoading = false);
+
+                              if (credenciales != null &&
+                                  credenciales.user != null) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const HomePage(),
+                                  ),
+                                );
+                              } else {
+                                _showSnackBar(
+                                  'El correo o la contraseña son incorrectos',
+                                );
+                              }
+                            },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF74d4ff),
+                      ),
+                      child: _isLoading
+                          ? const CircularProgressIndicator(
+                              color: Colors.black87,
+                            )
+                          : const Text(
+                              'Log in',
+                              style: TextStyle(color: Colors.black87),
+                            ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'o continúa con ',
+                      style: TextStyle(color: Colors.black87, fontSize: 15.0),
+                    ),
+                    const SizedBox(height: 30),
+                    IconButton(
+                      icon: const Icon(
+                        FontAwesomeIcons.google,
+                        size: 50,
+                        color: Colors.black87,
+                      ),
+                      onPressed: () async {
+                        final user = await authController.loginWithGoogle();
+                        if (user != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomePage(),
+                            ),
+                          );
+                        } else {
+                          print('Error al iniciar sesión con Google');
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 50),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          '¿No eres miembro? ',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 17.0,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, 'signup_view');
+                          },
+                          child: const Text(
+                            'Regístrate ahora',
+                            style: TextStyle(
+                              color: Color(0xFF2b7fff),
+                              fontSize: 17.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
                   ],
                 ),
-                const SizedBox(height: 30),
-              ],
+              ),
             ),
           ),
         ),
