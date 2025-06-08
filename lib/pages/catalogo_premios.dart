@@ -14,11 +14,11 @@ class CatalogoPremiosPage extends StatefulWidget {
 class _CatalogoPremiosPageState extends State<CatalogoPremiosPage> {
   @override
   Widget build(BuildContext context) {
-    return HomePage();
+    return CatalogoPage();
   }
 }
 
-class HomePage extends StatelessWidget {
+class CatalogoPage extends StatelessWidget {
   final List<Map<String, String>> items = [
     {'image': 'assets/images/piladea_logo.png', 'text': 'Elemento 1'},
     {'image': 'assets/images/piladea_logo.png', 'text': 'Elemento 2'},

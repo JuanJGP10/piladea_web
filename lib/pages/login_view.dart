@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:piladea_web/Controller/perfil_crud.dart';
+import 'package:piladea_web/Model/perfil.dart';
 import 'package:piladea_web/Pages/home_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piladea_web/Authentication/structures/controllers/auth_controller.dart';
@@ -22,6 +23,7 @@ class _LoginViewState extends State<LoginView> {
   late TextEditingController txtPassword;
   bool _isLoading = false; // Por si quieres mostrar progreso
   bool _isPasswordHidden = true;
+  late Perfil perfilLlave;
 
   @override
   void initState() {
@@ -43,8 +45,16 @@ class _LoginViewState extends State<LoginView> {
           .signInWithEmailAndPassword(email: email, password: contra);
       print("-------------------${userCredential.user!.uid}");
 
-      await PerfilCRUD.instance.findPerfil(userCredential.user!.uid);
+      Perfil? perfilEncontrado = await PerfilCRUD.instance.findPerfil(
+        userCredential.user!.uid,
+      );
 
+      if (perfilEncontrado == null) {
+        throw Exception("No se encontró el perfil del usuario.");
+      }
+
+      perfilLlave = perfilEncontrado;
+      print(perfilEncontrado);
       return userCredential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found' || e.code == 'wrong-password') {
@@ -164,13 +174,14 @@ class _LoginViewState extends State<LoginView> {
                                 txtPassword.text,
                               );
                               setState(() => _isLoading = false);
-
+                              print(perfilLlave);
                               if (credenciales != null &&
                                   credenciales.user != null) {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const HomePage(),
+                                    builder: (context) =>
+                                        HomePage(perfil: perfilLlave),
                                   ),
                                 );
                               } else {
@@ -209,7 +220,8 @@ class _LoginViewState extends State<LoginView> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const HomePage(),
+                              builder: (context) =>
+                                  HomePage(perfil: perfilLlave),
                             ),
                           );
                         } else {

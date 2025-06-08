@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:piladea_web/Authentication/Services/auth_firebase_repository.dart';
 import 'package:piladea_web/Controller/perfil_crud.dart';
+import 'package:piladea_web/Model/perfil.dart';
 import 'package:piladea_web/Pages/catalogo_premios.dart';
 import 'package:piladea_web/Pages/cupones_page.dart';
 import 'package:piladea_web/Pages/login_view.dart';
@@ -16,7 +17,8 @@ import 'package:geolocator/geolocator.dart';
 
 class HomePage extends StatefulWidget {
   static String id = '/home';
-  const HomePage({super.key});
+  final Perfil perfil;
+  const HomePage({Key? key, required this.perfil}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -24,6 +26,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  late Perfil perfilLLave;
 
   LatLng _origen = LatLng(
     37.857149364541726,
@@ -72,6 +75,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    perfilLLave = widget.perfil;
     obtenerUbicacionYActualizarMapa();
   }
 
@@ -149,8 +153,7 @@ class _HomePageState extends State<HomePage> {
 
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) =>
-                        ProfilePage(perfil: PerfilCRUD.currentProfile!),
+                    builder: (_) => ProfilePage(perfil: perfilLLave),
                   ),
                 );
               },
@@ -206,7 +209,6 @@ class _HomePageState extends State<HomePage> {
                     AuthFirebaseRepository authFirebaseRepository =
                         AuthFirebaseRepository();
                     authFirebaseRepository.logOut();
-                    PerfilCRUD.currentProfile = null;
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (_) => LoginView()),
                     );

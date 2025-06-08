@@ -19,7 +19,7 @@ class _RegisterPageState extends State<SignupView> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final authService = AuthController();
-
+  late Perfil perfil;
   String? selectedOption;
   DateTime? selectedDate;
 
@@ -213,7 +213,7 @@ class _RegisterPageState extends State<SignupView> {
           ),
         );
 
-        PerfilCRUD p = PerfilCRUD();
+        PerfilCRUD p = PerfilCRUD.instance;
         //ImagenesAleatorias i = ImagenesAleatorias();
         final String? userUid = FirebaseAuth.instance.currentUser?.uid;
 
@@ -234,12 +234,21 @@ class _RegisterPageState extends State<SignupView> {
           destinos: [],
         );
         await p.addPerfil(p1);
-        await PerfilCRUD.instance.findPerfil(p1.uID!);
+
+        Perfil? perfilEncontrado = await PerfilCRUD.instance.findPerfil(
+          p1.uID!,
+        );
+
+        if (perfilEncontrado == null) {
+          throw Exception("No se pudo encontrar el perfil");
+        }
+
+        perfil = perfilEncontrado; // ahora Dart sabe que no es null
 
         await Future.delayed(const Duration(seconds: 2));
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => HomePage(perfil: perfil)),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piladea_web/Model/perfil.dart';
+import 'package:piladea_web/pages/profile_page.dart';
 
 import '../../Controller/perfil_CRUD.dart';
 
@@ -12,7 +13,7 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  late Perfil p;
+  late Perfil perfilLLave;
   TextEditingController txtFirstName = TextEditingController();
   TextEditingController txtLastName = TextEditingController();
   DateTime selectedDate = DateTime.now();
@@ -21,11 +22,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-    p = widget.perfil;
-    txtFirstName.text = p.nombre!;
-    txtLastName.text = p.apellidos!;
-    selectedDate = p.fechaNacimiento;
-    selectedGender = p.sexo;
+    perfilLLave = widget.perfil;
+    txtFirstName.text = perfilLLave.nombre!;
+    txtLastName.text = perfilLLave.apellidos!;
+    selectedDate = perfilLLave.fechaNacimiento;
+    selectedGender = perfilLLave.sexo;
   }
 
   @override
@@ -61,7 +62,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               height: 200,
               child: ClipOval(
                 child: Image.asset(
-                  '${p.rutaImagen}',
+                  '${perfilLLave.rutaImagen}',
                   fit: BoxFit.fitWidth,
                   scale: 1,
                 ),
@@ -131,7 +132,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
-                  initialValue: p.correo,
+                  initialValue: perfilLLave.correo,
                   decoration: const InputDecoration(
                     labelText: 'Email',
                     enabled: false,
@@ -155,7 +156,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   child: InputDecorator(
                     decoration: InputDecoration(
                       labelText:
-                          '${p.fechaNacimiento.day}/${p.fechaNacimiento.month}/${p.fechaNacimiento.year}',
+                          '${perfilLLave.fechaNacimiento.day}/${perfilLLave.fechaNacimiento.month}/${perfilLLave.fechaNacimiento.year}',
                       border: const OutlineInputBorder(),
                       suffixIcon: const Icon(Icons.calendar_today),
                     ),
@@ -163,9 +164,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          selectedDate != null
-                              ? "${selectedDate.toLocal()}".split(' ')[0]
-                              : 'Selecciona la fecha de nacimiento',
+                          "${selectedDate.toLocal()}".split(' ')[0],
                           style: const TextStyle(
                             fontSize: 16,
                             color: Colors.black,
@@ -225,15 +224,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       admin: false,
                       nombre: txtFirstName.text,
                       apellidos: txtLastName.text,
-                      correo: p.correo,
+                      correo: perfilLLave.correo,
                       fechaNacimiento: selectedDate,
                       sexo: selectedGender,
-                      rutaImagen: p.rutaImagen,
-                      uID: p.uID,
+                      rutaImagen: perfilLLave.rutaImagen,
+                      uID: perfilLLave.uID,
                     );
-                    await PerfilCRUD.instance.updatePerfil(p.docID, p1);
-                    p = p1;
-                    Navigator.pop(context, p);
+                    await PerfilCRUD.instance.updatePerfil(
+                      perfilLLave.docID,
+                      p1,
+                    );
+                    perfilLLave = p1;
+                    PerfilCRUD.currentProfile = p1;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfilePage(perfil: perfilLLave),
+                      ),
+                    );
                   },
                   child: const Text(
                     'Guardar Cambios',

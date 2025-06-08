@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:piladea_web/Controller/perfil_crud.dart';
+import 'package:piladea_web/Pages/home_page.dart';
 import 'package:piladea_web/pages/profileEdit_page.dart';
 
 // import 'package:piladea_web/pages/profileEdit_page.dart';
@@ -14,7 +14,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePage extends State<ProfilePage> {
-  late Perfil p;
+  late Perfil perfilLLave;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +27,15 @@ class _ProfilePage extends State<ProfilePage> {
           'Perfil',
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomePage(perfil: perfilLLave),
+            ),
+          ),
         ),
       ),
       body: Stack(
@@ -56,7 +65,7 @@ class _ProfilePage extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    p = widget.perfil;
+    perfilLLave = widget.perfil;
   }
 
   Widget _buildEditButton(BuildContext context) {
@@ -64,14 +73,10 @@ class _ProfilePage extends State<ProfilePage> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => EditProfileScreen(perfil: p)),
-        ).then((perfilActualizado) {
-          if (perfilActualizado != null) {
-            setState(() {
-              p = perfilActualizado;
-            });
-          }
-        });
+          MaterialPageRoute(
+            builder: (context) => EditProfileScreen(perfil: perfilLLave),
+          ),
+        );
       },
       backgroundColor: Colors.blue,
       child: Icon(Icons.edit, color: Colors.black),
@@ -106,7 +111,7 @@ class _ProfilePage extends State<ProfilePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                '${p.nombre} ${p.apellidos}',
+                '${perfilLLave.nombre} ${perfilLLave.apellidos}',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -115,15 +120,15 @@ class _ProfilePage extends State<ProfilePage> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
-              _buildInfoTile("Nombre", p.nombre!),
-              _buildInfoTile("Apellido", p.apellidos!),
-              _buildInfoTile("Email", p.correo!),
+              _buildInfoTile("Nombre", perfilLLave.nombre!),
+              _buildInfoTile("Apellido", perfilLLave.apellidos!),
+              _buildInfoTile("Email", perfilLLave.correo!),
               _buildInfoTile("Contraseña", "********"),
               _buildInfoTile(
                 "Fecha de Nacimiento",
-                '${p.fechaNacimiento.day}/${p.fechaNacimiento.month}/${p.fechaNacimiento.year}',
+                '${perfilLLave.fechaNacimiento.day}/${perfilLLave.fechaNacimiento.month}/${perfilLLave.fechaNacimiento.year}',
               ),
-              _buildInfoTile("Género", p.sexo!),
+              _buildInfoTile("Género", perfilLLave.sexo!),
             ],
           ),
         ),
@@ -137,7 +142,11 @@ class _ProfilePage extends State<ProfilePage> {
         width: 200,
         height: 200,
         child: ClipOval(
-          child: Image.asset('${p.rutaImagen}', fit: BoxFit.fitWidth, scale: 1),
+          child: Image.asset(
+            '${perfilLLave.rutaImagen}',
+            fit: BoxFit.fitWidth,
+            scale: 1,
+          ),
         ),
       ),
     );

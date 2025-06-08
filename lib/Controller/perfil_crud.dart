@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:piladea_web/Model/perfil.dart';
-import 'package:get/get.dart';
 
 class PerfilCRUD {
-  static PerfilCRUD get instance => Get.put(PerfilCRUD());
+  PerfilCRUD._(); // constructor privado
+
+  static final PerfilCRUD instance = PerfilCRUD._();
 
   final CollectionReference perfiles = FirebaseFirestore.instance.collection(
     'Perfiles',

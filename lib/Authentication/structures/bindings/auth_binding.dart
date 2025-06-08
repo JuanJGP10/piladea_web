@@ -6,6 +6,6 @@ class AuthBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<AuthController>(() => AuthController());
-    Get.lazyPut<PerfilCRUD>(() => PerfilCRUD());
+    Get.lazyPut<PerfilCRUD>(() => PerfilCRUD.instance);
   }
 }
