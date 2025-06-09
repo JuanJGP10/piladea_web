@@ -92,16 +92,16 @@ class AuthFirebaseRepository {
         List<String> nombre =
             user.displayName?.split(" ") ?? ["Nombre", "Apellido"];
         DateTime t = DateTime.now();
-        Perfil? p = PerfilCRUD.instance.crearPerfilGoogle(
+        Perfil? perfilNuevo = PerfilCRUD.instance.crearPerfilGoogle(
           ImagenesAleatorias().obtenerRutaImagenAleatoria(),
           nombre[0],
           nombre.length > 1 ? nombre[1] : '',
           user.email,
           t,
         );
-        perfilGoogle = p;
-        await PerfilCRUD.instance.addPerfil(p);
-        await PerfilCRUD.instance.findPerfil(p!.uID!);
+        perfilGoogle = perfilNuevo;
+        await PerfilCRUD.instance.addPerfil(perfilNuevo);
+        return PerfilCRUD.instance.findPerfil(perfilNuevo!.uID!);
       }
 
       return perfilGoogle;
