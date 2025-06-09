@@ -21,7 +21,7 @@ class _LoginViewState extends State<LoginView> {
   AuthController authController = Get.put(AuthController());
   late TextEditingController txtEmail;
   late TextEditingController txtPassword;
-  bool _isLoading = false; // Por si quieres mostrar progreso
+  bool _isLoading = false;
   bool _isPasswordHidden = true;
   late Perfil perfilLlave;
 
@@ -43,7 +43,6 @@ class _LoginViewState extends State<LoginView> {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: contra);
-      print("-------------------${userCredential.user!.uid}");
 
       Perfil? perfilEncontrado = await PerfilCRUD.instance.findPerfil(
         userCredential.user!.uid,
@@ -54,14 +53,32 @@ class _LoginViewState extends State<LoginView> {
       }
 
       perfilLlave = perfilEncontrado;
-      print(perfilEncontrado);
       return userCredential;
+
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found' || e.code == 'wrong-password') {
-        // Aquí puedes mostrar un error específico si quieres
+      String mensajeError;
+
+      switch (e.code) {
+        case 'user-not-found':
+          mensajeError = 'No existe un usuario con ese correo.';
+          break;
+        case 'wrong-password':
+          mensajeError = 'Contraseña incorrecta.';
+          break;
+        case 'invalid-email':
+          mensajeError = 'Correo inválido.';
+          break;
+        default:
+          mensajeError = 'Error de autenticación: ${e.message}';
       }
+
+      _showSnackBar(mensajeError);
+      return null;
+
+    } catch (e) {
+      _showSnackBar('Error inesperado: ${e.toString()}');
+      return null;
     }
-    return null;
   }
 
   void _showSnackBar(String message) {
@@ -96,9 +113,7 @@ class _LoginViewState extends State<LoginView> {
           child: Center(
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                minHeight:
-                    MediaQuery.of(context).size.height -
-                    40, // ajusta según padding
+                minHeight: MediaQuery.of(context).size.height - 40,
               ),
               child: IntrinsicHeight(
                 child: Column(
@@ -168,39 +183,43 @@ class _LoginViewState extends State<LoginView> {
                       onPressed: _isLoading
                           ? null
                           : () async {
-                              setState(() => _isLoading = true);
-                              UserCredential? credenciales = await login(
-                                txtEmail.text,
-                                txtPassword.text,
-                              );
-                              setState(() => _isLoading = false);
-                              print(perfilLlave);
-                              if (credenciales != null &&
-                                  credenciales.user != null) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        HomePage(perfil: perfilLlave),
-                                  ),
-                                );
-                              } else {
-                                _showSnackBar(
-                                  'El correo o la contraseña son incorrectos',
-                                );
-                              }
-                            },
+                        if (txtEmail.text.trim().isEmpty ||
+                            txtPassword.text.isEmpty) {
+                          _showSnackBar(
+                            'Por favor, ingresa correo y contraseña.',
+                          );
+                          return;
+                        }
+
+                        setState(() => _isLoading = true);
+                        UserCredential? credenciales = await login(
+                          txtEmail.text.trim(),
+                          txtPassword.text,
+                        );
+                        setState(() => _isLoading = false);
+
+                        if (credenciales != null &&
+                            credenciales.user != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  HomePage(perfil: perfilLlave),
+                            ),
+                          );
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF74d4ff),
                       ),
                       child: _isLoading
                           ? const CircularProgressIndicator(
-                              color: Colors.black87,
-                            )
+                        color: Colors.black87,
+                      )
                           : const Text(
-                              'Log in',
-                              style: TextStyle(color: Colors.black87),
-                            ),
+                        'Log in',
+                        style: TextStyle(color: Colors.black87),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     const Text(
@@ -215,8 +234,8 @@ class _LoginViewState extends State<LoginView> {
                         color: Colors.black87,
                       ),
                       onPressed: () async {
-                        Perfil? perfilGoogle = await authController
-                            .loginWithGoogle();
+                        Perfil? perfilGoogle =
+                        await authController.loginWithGoogle();
                         if (perfilGoogle != null) {
                           perfilLlave = perfilGoogle;
                           Navigator.push(
@@ -227,7 +246,9 @@ class _LoginViewState extends State<LoginView> {
                             ),
                           );
                         } else {
-                          print('Error al iniciar sesión con Google');
+                          _showSnackBar(
+                            'Error al iniciar sesión con Google',
+                          );
                         }
                       },
                     ),
