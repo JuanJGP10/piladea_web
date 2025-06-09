@@ -375,7 +375,7 @@ class _RegisterPageState extends State<SignupView> {
         items: opciones.map((op) {
           return DropdownMenuItem(
             value: op,
-            child: Text(op, style: const TextStyle(color: Colors.white)),
+            child: Text(op, style: const TextStyle(color: Colors.black)),
           );
         }).toList(),
         onChanged: (value) {
