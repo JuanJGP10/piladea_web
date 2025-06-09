@@ -42,30 +42,25 @@ class _CatalogoPremiosPageState extends State<CatalogoPremiosPage> {
   Categoria? categoriaSeleccionada;
 
   Future<List<Map<String, dynamic>>> fetchCatalogo() async {
-  final snapshot = await FirebaseFirestore.instance
-      .collection('cupones')
-      .get();
+    final snapshot = await FirebaseFirestore.instance.collection('cupones').get();
 
-  return snapshot.docs.map((doc) {
-    final data = doc.data();
-    return {
-      ...data,
-      'categoria': _parseCategoria(data['categoria'] as String?),
-    };
-  }).toList();
-}
-  Categoria? _parseCategoria(String? value) {
-  if (value == null) return Categoria.Otros;
-  try {
+    return snapshot.docs.map((doc) {
+      final data = doc.data();
+      return {
+        ...data,
+        'categoria': _parseCategoria(data['Categoria'] as String?), // Asegúrate que la clave coincide con Firestore
+      };
+    }).toList();
+  }
+
+  Categoria _parseCategoria(String? value) {
+    if (value == null) return Categoria.Otros;
+
     return Categoria.values.firstWhere(
-      (c) => c.name == value,
+          (c) => c.name.toLowerCase() == value.toLowerCase(),
       orElse: () => Categoria.Otros,
     );
-  } catch (_) {
-    return Categoria.Otros;
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -78,12 +73,6 @@ class _CatalogoPremiosPageState extends State<CatalogoPremiosPage> {
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: const Color(0xFF74d4ff),
-        leading: Navigator.of(context).canPop()
-            ? IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            : null,
       ),
       body: Column(
         children: [
@@ -110,7 +99,7 @@ class _CatalogoPremiosPageState extends State<CatalogoPremiosPage> {
                   child: Text('Todas las categorías'),
                 ),
                 ...Categoria.values.map(
-                  (categoria) => DropdownMenuItem<Categoria?>(
+                      (categoria) => DropdownMenuItem<Categoria?>(
                     value: categoria,
                     child: Text(categoria.name),
                   ),
@@ -132,8 +121,7 @@ class _CatalogoPremiosPageState extends State<CatalogoPremiosPage> {
 
                 final items = (snapshot.data ?? []).where((item) {
                   final cat = item['categoria'] as Categoria?;
-                  return categoriaSeleccionada == null ||
-                      categoriaSeleccionada == cat;
+                  return categoriaSeleccionada == null || categoriaSeleccionada == cat;
                 }).toList();
 
                 if (items.isEmpty) {
@@ -152,7 +140,7 @@ class _CatalogoPremiosPageState extends State<CatalogoPremiosPage> {
                     final descripcion = item['Descripcion'] ?? 'Producto x';
                     final canBicicois = item['cantBicicoins'] ?? 500;
                     final categoria = item['categoria'] as Categoria? ?? Categoria.Otros;
-                    //print("Aqui");
+
                     return Container(
                       margin: const EdgeInsets.only(bottom: 16),
                       padding: const EdgeInsets.all(12),
@@ -188,7 +176,7 @@ class _CatalogoPremiosPageState extends State<CatalogoPremiosPage> {
                                   "BiciCoins: $canBicicois",
                                   style: const TextStyle(fontSize: 14),
                                 ),
-                                Text("Categoría: ${categoria.toString() ?? 'Otros'}"),
+                                Text("Categoría: ${categoria.name}"),
                               ],
                             ),
                           ),
