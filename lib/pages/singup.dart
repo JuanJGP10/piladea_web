@@ -370,7 +370,7 @@ class _RegisterPageState extends State<SignupView> {
             fontWeight: FontWeight.w700,
           ),
         ),
-        dropdownColor: Colors.black87,
+        dropdownColor: Color.fromARGB(255, 242, 251, 255),
         value: selectedOption,
         items: opciones.map((op) {
           return DropdownMenuItem(
