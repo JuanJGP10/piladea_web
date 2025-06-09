@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:piladea_web/Controller/imagen_aleatoria.dart';
 import 'package:piladea_web/Controller/perfil_crud.dart';
 import 'package:piladea_web/Model/perfil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -92,7 +93,7 @@ class AuthFirebaseRepository {
             user.displayName?.split(" ") ?? ["Nombre", "Apellido"];
         DateTime t = DateTime.now();
         Perfil? p = PerfilCRUD.instance.crearPerfilGoogle(
-          user.photoURL,
+          ImagenesAleatorias().obtenerRutaImagenAleatoria(),
           nombre[0],
           nombre.length > 1 ? nombre[1] : '',
           user.email,
