@@ -52,38 +52,51 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
         backgroundColor: const Color(0xFF74d4ff),
       ),
       backgroundColor: const Color.fromARGB(255, 242, 251, 255),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Introduce tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.',
-              style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Introduce tu correo electrónico\ny te enviaremos un enlace para restablecer tu contraseña.',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
 
-            ),
-            const SizedBox(height: 24),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'Correo electrónico',
-                border: OutlineInputBorder(),
+              // Campo de texto más corto y centrado
+              SizedBox(
+                width: 220,
+                child: TextField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Correo electrónico',
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                ),
               ),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _sendResetEmail,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF74d4ff),
+              const SizedBox(height: 24),
+
+              // Botón del mismo ancho
+              SizedBox(
+                width: 220,
+                child: ElevatedButton(
+                  onPressed: _sendResetEmail,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF74d4ff),
+                    padding: const EdgeInsets.symmetric(vertical: 14.0),
+                  ),
+                  child: const Text(
+                    'Enviar correo',
+                    style: TextStyle(color: Colors.black87),
+                  ),
+                ),
               ),
-              child: const Text(
-                'Enviar correo',
-                style: TextStyle(color: Colors.black87),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
