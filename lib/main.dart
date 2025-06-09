@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         SplashPage.id: (context) => const SplashPage(),
         LoginView.id: (context) => LoginView(),
         SignupView.id: (context) => SignupView(),
-        'restablecer_contraseña':(context)=>const ResetPasswordView(),
+        'restablecer_contraseña': (context) => const ResetPasswordView(),
 
         //HomePage.id: (context) => const HomePage(),
       },
