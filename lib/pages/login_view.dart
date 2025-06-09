@@ -278,7 +278,20 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 60),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.pushNamed(context, 'restablecer_contraseña');
+                      },
+                      child: const Text(
+                        ' Contraseña olvidada ',
+                        style: TextStyle(
+                          color: Color(0xFF2b7fff),
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:piladea_web/Pages/login_view.dart';
 import 'package:piladea_web/Pages/singup.dart';
 import 'package:piladea_web/firebase_options.dart';
+import 'package:piladea_web/pages/restablecer_contrase%C3%B1a.dart';
 import 'package:piladea_web/pages/splash_page.dart';
 
 void main() async {
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         SplashPage.id: (context) => const SplashPage(),
         LoginView.id: (context) => LoginView(),
         SignupView.id: (context) => SignupView(),
+        'restablecer_contraseña':(context)=>const ResetPasswordView(),
 
         //HomePage.id: (context) => const HomePage(),
       },
