@@ -26,7 +26,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     txtFirstName.text = perfilLLave.nombre!;
     txtLastName.text = perfilLLave.apellidos!;
     selectedDate = perfilLLave.fechaNacimiento;
-    selectedGender = perfilLLave.sexo;
+    selectedGender = genderOptions.contains(perfilLLave.sexo)
+        ? perfilLLave.sexo
+        : 'Por especificar';
   }
 
   @override
@@ -101,6 +103,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       });
     }
   }
+
+  final List<String> genderOptions = [
+    'Masculino',
+    'Femenino',
+    'No binario',
+    'Prefiero no decirlo',
+    'Por especificar',
+  ];
 
   Widget _buildProfileDetailsForm() {
     return SingleChildScrollView(
@@ -184,36 +194,33 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     const SizedBox(width: 10),
                     Expanded(
                       child: DropdownButton<String>(
-                        value: selectedGender,
-                        icon: selectedGender != null
-                            ? null
-                            : const Icon(Icons.arrow_drop_down),
+                        value: genderOptions.contains(selectedGender)
+                            ? selectedGender
+                            : genderOptions[0], // Asegura valor válido
+                        icon: const Icon(Icons.arrow_drop_down),
                         onChanged: (String? newValue) {
                           setState(() {
-                            selectedGender = newValue;
+                            selectedGender = newValue!;
                           });
                         },
-                        items:
-                            <String>[
-                              'Masculino',
-                              'Femenino',
-                              'No binario',
-                              'Prefiero no decirlo',
-                            ].map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              );
-                            }).toList(),
+                        items: genderOptions.map<DropdownMenuItem<String>>((
+                          String value,
+                        ) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          );
+                        }).toList(),
                       ),
                     ),
                   ],
                 ),
+
                 const SizedBox(height: 30),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
