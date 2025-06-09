@@ -215,8 +215,10 @@ class _LoginViewState extends State<LoginView> {
                         color: Colors.black87,
                       ),
                       onPressed: () async {
-                        final user = await authController.loginWithGoogle();
-                        if (user != null) {
+                        Perfil? perfilGoogle = await authController
+                            .loginWithGoogle();
+                        if (perfilGoogle != null) {
+                          perfilLlave = perfilGoogle;
                           Navigator.push(
                             context,
                             MaterialPageRoute(

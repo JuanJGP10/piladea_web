@@ -4,6 +4,8 @@ import 'package:piladea_web/Model/perfil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthFirebaseRepository {
+  bool kIsWeb = true;
+
   Future<User?> registerWithEmailAndPassword({
     required String email,
     required String password,
@@ -40,46 +42,70 @@ class AuthFirebaseRepository {
     await FirebaseAuth.instance.signOut();
   }
 
-  Future<User?> signInWithGoogle() async {
+  Future<Perfil?> signInWithGoogle() async {
+    Perfil? perfilGoogle;
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
-      );
-      final userCredential = await FirebaseAuth.instance.signInWithCredential(
-        credential,
-      );
+      UserCredential userCredential;
+
+      if (kIsWeb) {
+        // 🔹 FLUJO PARA WEB
+        GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
+        userCredential = await FirebaseAuth.instance.signInWithPopup(
+          googleProvider,
+        );
+      } else {
+        // 🔹 FLUJO PARA MÓVIL
+        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+        if (googleUser == null) return null; // Usuario canceló
+
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        userCredential = await FirebaseAuth.instance.signInWithCredential(
+          credential,
+        );
+      }
+
       User? user = userCredential.user;
 
-      // Aquí es donde se maneja la creación o búsqueda del perfil
-      print("············!!!!!!······${userCredential.user!.uid}");
+      if (user == null) {
+        print(user);
+        return null;
+      }
+
+      print("············!!!!!!······${user.uid}");
       print(
-        "#######################33${await PerfilCRUD.instance.buscarSiExistePerfil(user!.uid)}",
+        "#######################33${await PerfilCRUD.instance.buscarSiExistePerfil(user.uid)}",
       );
+
       if (await PerfilCRUD.instance.buscarSiExistePerfil(user.uid)) {
-        await PerfilCRUD.instance.findPerfil(user.uid);
+        perfilGoogle = await PerfilCRUD.instance.findPerfil(user.uid);
       } else {
         PerfilCRUD.instance.recibirUID(user.uid);
-        List<String> nombre = user.displayName!.split(" ");
+        List<String> nombre =
+            user.displayName?.split(" ") ?? ["Nombre", "Apellido"];
         DateTime t = DateTime.now();
         Perfil? p = PerfilCRUD.instance.crearPerfilGoogle(
           user.photoURL,
           nombre[0],
-          nombre[1],
+          nombre.length > 1 ? nombre[1] : '',
           user.email,
           t,
         );
+        perfilGoogle = p;
         await PerfilCRUD.instance.addPerfil(p);
         await PerfilCRUD.instance.findPerfil(p!.uID!);
       }
 
-      // Devuelve el usuario solo después de que se haya creado o encontrado el perfil
-      return user;
+      return perfilGoogle;
     } catch (e) {
-      print(e);
+      print('Error en signInWithGoogle: $e');
       return null;
     }
   }

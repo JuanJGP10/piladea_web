@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:piladea_web/Authentication/services/auth_firebase_repository.dart';
 import 'package:get/get.dart';
 import 'package:piladea_web/Controller/perfil_crud.dart';
+import 'package:piladea_web/Model/perfil.dart';
 
 class AuthController extends GetxController {
   Rxn<User?> firebaseUser = Rxn<User?>();
@@ -21,11 +22,12 @@ class AuthController extends GetxController {
     PerfilCRUD.instance.findPerfil(firebaseUser.value!.uid);
   }
 
-  Future<User?> loginWithGoogle() async {
-    final user = await AuthFirebaseRepository().signInWithGoogle();
-    if (user != null) {
-      firebaseUser.value = user;
+  Future<Perfil?> loginWithGoogle() async {
+    Perfil? perfil = await AuthFirebaseRepository().signInWithGoogle();
+
+    if (perfil == null) {
+      print("$perfil authController");
     }
-    return user;
+    return perfil;
   }
 }
