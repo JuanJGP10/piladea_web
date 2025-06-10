@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -54,7 +56,6 @@ class _LoginViewState extends State<LoginView> {
 
       perfilLlave = perfilEncontrado;
       return userCredential;
-
     } on FirebaseAuthException catch (e) {
       String mensajeError;
 
@@ -74,7 +75,6 @@ class _LoginViewState extends State<LoginView> {
 
       _showSnackBar(mensajeError);
       return null;
-
     } catch (e) {
       _showSnackBar('Error inesperado: ${e.toString()}');
       return null;
@@ -183,43 +183,43 @@ class _LoginViewState extends State<LoginView> {
                       onPressed: _isLoading
                           ? null
                           : () async {
-                        if (txtEmail.text.trim().isEmpty ||
-                            txtPassword.text.isEmpty) {
-                          _showSnackBar(
-                            'Por favor, ingresa correo y contraseña.',
-                          );
-                          return;
-                        }
+                              if (txtEmail.text.trim().isEmpty ||
+                                  txtPassword.text.isEmpty) {
+                                _showSnackBar(
+                                  'Por favor, ingresa correo y contraseña.',
+                                );
+                                return;
+                              }
 
-                        setState(() => _isLoading = true);
-                        UserCredential? credenciales = await login(
-                          txtEmail.text.trim(),
-                          txtPassword.text,
-                        );
-                        setState(() => _isLoading = false);
+                              setState(() => _isLoading = true);
+                              UserCredential? credenciales = await login(
+                                txtEmail.text.trim(),
+                                txtPassword.text,
+                              );
+                              setState(() => _isLoading = false);
 
-                        if (credenciales != null &&
-                            credenciales.user != null) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  HomePage(perfil: perfilLlave),
-                            ),
-                          );
-                        }
-                      },
+                              if (credenciales != null &&
+                                  credenciales.user != null) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        HomePage(perfil: perfilLlave),
+                                  ),
+                                );
+                              }
+                            },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF74d4ff),
                       ),
                       child: _isLoading
                           ? const CircularProgressIndicator(
-                        color: Colors.black87,
-                      )
+                              color: Colors.black87,
+                            )
                           : const Text(
-                        'Log in',
-                        style: TextStyle(color: Colors.black87),
-                      ),
+                              'Log in',
+                              style: TextStyle(color: Colors.black87),
+                            ),
                     ),
                     const SizedBox(height: 20),
                     const Text(
@@ -234,8 +234,8 @@ class _LoginViewState extends State<LoginView> {
                         color: Colors.black87,
                       ),
                       onPressed: () async {
-                        Perfil? perfilGoogle =
-                        await authController.loginWithGoogle();
+                        Perfil? perfilGoogle = await authController
+                            .loginWithGoogle();
                         if (perfilGoogle != null) {
                           perfilLlave = perfilGoogle;
                           Navigator.push(
@@ -246,9 +246,7 @@ class _LoginViewState extends State<LoginView> {
                             ),
                           );
                         } else {
-                          _showSnackBar(
-                            'Error al iniciar sesión con Google',
-                          );
+                          _showSnackBar('Error al iniciar sesión con Google');
                         }
                       },
                     ),
@@ -280,7 +278,7 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     const SizedBox(height: 60),
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pushNamed(context, 'restablecer_contraseña');
                       },
                       child: const Text(

@@ -16,7 +16,6 @@ import 'package:geolocator/geolocator.dart';
 // import 'package:piladea_web/Authentication/services/auth_firebase_repository.dart';
 
 class HomePage extends StatefulWidget {
-  static String id = '/home';
   final Perfil perfil;
   const HomePage({Key? key, required this.perfil}) : super(key: key);
 

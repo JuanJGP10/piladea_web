@@ -25,7 +25,7 @@ class Perfil {
     this.correo,
     this.sexo,
     required this.fechaNacimiento,
-    required this.fechaCreacion, // <-- asegúrate de incluirlo
+    required this.fechaCreacion,
     this.uID,
     this.rutaImagen,
     this.bicicoins = 0,
