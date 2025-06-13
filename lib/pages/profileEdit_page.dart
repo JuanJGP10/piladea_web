@@ -242,7 +242,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       p1,
                     );
                     perfilLLave = p1;
-                    PerfilCRUD.currentProfile = p1;
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(

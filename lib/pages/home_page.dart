@@ -211,8 +211,6 @@ class _HomePageState extends State<HomePage> {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (_) => LoginView()),
                     );
-                  } else {
-                    print(PerfilCRUD.currentProfile);
                   }
                 });
               },

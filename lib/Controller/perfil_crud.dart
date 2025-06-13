@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:piladea_web/Model/perfil.dart';
 
 class PerfilCRUD {
-  PerfilCRUD._(); // constructor privado
+  PerfilCRUD._();
 
   static final PerfilCRUD instance = PerfilCRUD._();
 
@@ -11,7 +11,6 @@ class PerfilCRUD {
   );
 
   static String? uid;
-  static Perfil? currentProfile;
 
   /// CREATE
   Future<void> addPerfil(Perfil? perfil) async {
@@ -19,40 +18,31 @@ class PerfilCRUD {
       return;
     }
 
-    perfil.fechaCreacion = DateTime.now(); // Asegura que este campo exista
+    perfil.fechaCreacion = DateTime.now();
 
     await perfiles.add(perfil.toJSON());
   }
 
   /// READ
   Future<Perfil?> findPerfil(String uID) async {
-    try {
-      var querySnapshot = await perfiles.where("uID", isEqualTo: uID).get();
-      if (querySnapshot.docs.isNotEmpty) {
-        var data = Map<String, dynamic>.from(
-          querySnapshot.docs[0].data() as Map,
-        );
+    var querySnapshot = await perfiles.where("uID", isEqualTo: uID).get();
+    if (querySnapshot.docs.isNotEmpty) {
+      var data = Map<String, dynamic>.from(querySnapshot.docs[0].data() as Map);
 
-        Timestamp timestamp = data['fechaNacimiento'];
-        Timestamp timestamp2 = data['fechaCreacion'];
-        DateTime fechaNacimiento = timestamp.toDate();
-        DateTime fechaCreacion = timestamp2.toDate();
+      Timestamp timestamp = data['fechaNacimiento'];
+      Timestamp timestamp2 = data['fechaCreacion'];
+      DateTime fechaNacimiento = timestamp.toDate();
+      DateTime fechaCreacion = timestamp2.toDate();
 
-        Perfil perfil = Perfil.fromJsonWithDate(
-          data,
-          fechaNacimiento,
-          fechaCreacion,
-        );
-        perfil.docID = querySnapshot.docs[0].id;
-        currentProfile = perfil;
-        print('✅ Perfil encontrado: ${perfil.nombre}');
-        return perfil;
-      } else {
-        print("⚠️ No se encontró perfil con uID: $uID");
-        return null;
-      }
-    } catch (e) {
-      print("❌ Error al buscar perfil: $e");
+      Perfil perfil = Perfil.fromJsonWithDate(
+        data,
+        fechaNacimiento,
+        fechaCreacion,
+      );
+      perfil.docID = querySnapshot.docs[0].id;
+
+      return perfil;
+    } else {
       return null;
     }
   }
@@ -60,46 +50,45 @@ class PerfilCRUD {
   /// UPDATE
   Future<void> updatePerfil(String? docID, Perfil? nuevoPerfil) {
     if (docID == null || nuevoPerfil == null) return Future.value();
-    currentProfile = nuevoPerfil;
-    currentProfile?.docID = docID;
+
     return perfiles.doc(docID).update(nuevoPerfil.toJSON());
   }
 
-  void updateBicicoins(int? bicicoins) {
-    final result = (currentProfile?.bicicoins ?? 0) - bicicoins!;
-    currentProfile?.bicicoins = result;
-    updatePerfil(currentProfile?.docID, currentProfile);
-  }
+  // void updateBicicoins(int? bicicoins) {
+  //   final result = (currentProfile?.bicicoins ?? 0) - bicicoins!;
+  //   currentProfile?.bicicoins = result;
+  //   updatePerfil(currentProfile?.docID, currentProfile);
+  // }
 
   /// DELETE
   Future<void> deletePerfil(String docID) {
     return perfiles.doc(docID).delete();
   }
 
-  /// AGREGAR DATOS RELACIONADOS
-  void anyadirCupon(String id) {
-    currentProfile?.cupones.add('/Cupones/$id');
-    updatePerfil(currentProfile?.docID, currentProfile);
-  }
+  // /// AGREGAR DATOS RELACIONADOS
+  // void anyadirCupon(String id) {
+  //   currentProfile?.cupones.add('/Cupones/$id');
+  //   updatePerfil(currentProfile?.docID, currentProfile);
+  // }
 
-  void anyadirTrayectos(String id) {
-    currentProfile?.trayectos.add('/Trayectos/$id');
-    updatePerfil(currentProfile?.docID, currentProfile);
-  }
+  // void anyadirTrayectos(String id) {
+  //   currentProfile?.trayectos.add('/Trayectos/$id');
+  //   updatePerfil(currentProfile?.docID, currentProfile);
+  // }
 
-  void anyadirDestino(String id) {
-    currentProfile?.destinos.add('/Destinos/$id');
-    updatePerfil(currentProfile?.docID, currentProfile);
-  }
+  // void anyadirDestino(String id) {
+  //   currentProfile?.destinos.add('/Destinos/$id');
+  //   updatePerfil(currentProfile?.docID, currentProfile);
+  // }
 
-  /// STREAMING Y CONSULTAS
-  Query<Object?> findPerfilCorreo(String correo) {
-    return perfiles.where("correo", isEqualTo: correo);
-  }
+  // /// STREAMING Y CONSULTAS
+  // Query<Object?> findPerfilCorreo(String correo) {
+  //   return perfiles.where("correo", isEqualTo: correo);
+  // }
 
-  Stream<QuerySnapshot> getPerfilesStream() {
-    return perfiles.orderBy('fechaNacimiento', descending: true).snapshots();
-  }
+  // Stream<QuerySnapshot> getPerfilesStream() {
+  //   return perfiles.orderBy('fechaNacimiento', descending: true).snapshots();
+  // }
 
   Future<List<Perfil>> getAllPerfiles() async {
     List<Perfil> list = [];
@@ -181,27 +170,27 @@ class PerfilCRUD {
     return perfiles.any((perfil) => perfil.uID == uD);
   }
 
-  Future<List<Perfil>> obtenerPerfilesPorFecha(
-    DateTime fechaInicio,
-    DateTime fechaFin,
-  ) async {
-    List<Perfil> list = [];
+  // Future<List<Perfil>> obtenerPerfilesPorFecha(
+  //   DateTime fechaInicio,
+  //   DateTime fechaFin,
+  // ) async {
+  //   List<Perfil> list = [];
 
-    QuerySnapshot querySnapshotCupon = await perfiles
-        .where('fechaCreacion', isGreaterThanOrEqualTo: fechaInicio)
-        .get();
+  //   QuerySnapshot querySnapshotCupon = await perfiles
+  //       .where('fechaCreacion', isGreaterThanOrEqualTo: fechaInicio)
+  //       .get();
 
-    for (var document in querySnapshotCupon.docs) {
-      var data = Map<String, dynamic>.from(document.data() as Map);
-      DateTime fechaCreacion = (data['fechaCreacion'] as Timestamp).toDate();
-      if (fechaCreacion.isBefore(fechaFin) ||
-          fechaCreacion.isAtSameMomentAs(fechaFin)) {
-        DateTime fechaNacimiento = (data['fechaNacimiento'] as Timestamp)
-            .toDate();
-        list.add(Perfil.fromJsonWithDate(data, fechaNacimiento, fechaCreacion));
-      }
-    }
+  //   for (var document in querySnapshotCupon.docs) {
+  //     var data = Map<String, dynamic>.from(document.data() as Map);
+  //     DateTime fechaCreacion = (data['fechaCreacion'] as Timestamp).toDate();
+  //     if (fechaCreacion.isBefore(fechaFin) ||
+  //         fechaCreacion.isAtSameMomentAs(fechaFin)) {
+  //       DateTime fechaNacimiento = (data['fechaNacimiento'] as Timestamp)
+  //           .toDate();
+  //       list.add(Perfil.fromJsonWithDate(data, fechaNacimiento, fechaCreacion));
+  //     }
+  //   }
 
-    return list;
-  }
+  //   return list;
+  // }
 }
